@@ -17,7 +17,7 @@ import java.util.Map;
  **/
 @Slf4j
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/login")
 public class LoginController {
      @Autowired
      private WechatUserService UserService;

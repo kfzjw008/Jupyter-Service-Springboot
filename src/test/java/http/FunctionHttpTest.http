@@ -4,14 +4,9 @@
 # * 'gtrp' and 'gtr' create a GET request with or without query parameters;
 # * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
 # * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
-
-GET http://localhost:8080/api/login/wxlogin
+GET http://localhost:8080/api/function/SearchSAO?LON=2&LAT=4
 //Content-Type: application/json
-//测试登录接口，传入code为随机码
+//测试观测适宜度
+//lon代表经度，LAT代表纬度
 
-{
-  "code": "001MIHo20XNVAK19gCn20xDvo20MIHor"
-}
 ###
-
-
