@@ -33,6 +33,7 @@ public class WechatUser {
     private String Gender;//用户的性别，基于微信
     private String Schoolid;//用户学号，基于用户本身，未来可能废弃
     private String Image;//用户头像存放
+    private String JWTToken;
     private int peoplenumber;
     @Column(columnDefinition = "DATETIME NOT NULL " + "DEFAULT CURRENT_TIMESTAMP ON UPDATE " + "CURRENT_TIMESTAMP", updatable = false, insertable = false)
     private LocalDateTime updateTime;//资料最后更新时间（上次登录时间）

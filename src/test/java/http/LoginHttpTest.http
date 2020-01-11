@@ -10,7 +10,7 @@ GET http://localhost:8080/api/login/wxlogin
 //测试登录接口，传入code为随机码
 
 {
-  "code": "001MIHo20XNVAK19gCn20xDvo20MIHor"
+  "code": "021JcM4N13Mtra1Zmt7N1SOG4N1JcM4O"
 }
 ###
 
