@@ -2,6 +2,7 @@ package com.jishe.jupyter.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.jishe.jupyter.component.JWT;
+import com.jishe.jupyter.component.RequestUtil;
 import com.jishe.jupyter.entity.WechatUser;
 import com.jishe.jupyter.repository.UserRepository;
 import com.jishe.jupyter.repository.UserfindRepository;
@@ -49,20 +50,8 @@ public class WechatUserService {
      **/
     public WechatUser Login(WechatUser user) {
         global glo = new global();
-        CloseableHttpClient httpclient = HttpClients.createDefault();
-        String resultString = "";
-        CloseableHttpResponse response = null;
-        String url = "https://api.weixin.qq.com/sns/jscode2session?appid=" + appid + "&secret=" + appsecret + "&js_code=" + user.getCode() + "&grant_type=authorization_code";
-        try {
-            URIBuilder builder = new URIBuilder(url);  // 创建uri
-            URI uri = builder.build();
-            HttpGet httpGet = new HttpGet(uri); // 创建http GET请求
-            response = httpclient.execute(httpGet);// 执行请求
-            // 判断返回状态是否为200 ：if (response.getStatusLine().getStatusCode() == 200)
-            resultString = EntityUtils.toString(response.getEntity(), "UTF-8");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        RequestUtil request= new RequestUtil();
+        String  resultString= request.CreateRequestUtil("https://api.weixin.qq.com/sns/jscode2session?appid=" + appid + "&secret=" + appsecret + "&js_code=" + user.getCode() + "&grant_type=authorization_code");
         // 解析json
         JSONObject jsonObject = (JSONObject) JSONObject.parse(resultString);
         session_key = jsonObject.get("session_key") + "";

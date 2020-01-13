@@ -56,6 +56,39 @@ SAO——
 |3|SAO_Data | Object |相关观测适宜度数据（提供24组，每三小时提供一组）|
 
 
+#### 输出参数
+
+SAO_Result——
+
+| 序号 | 参数名 | 参数类型 |解释 |
+| ------ | ------ | ------ | ------ |
+|1| AQI | int |空气质量指数 | 
+|2| City | String |地级市名称|
+|3| 1-21 | Object |时间序列，共24组数据，每组数据相隔3小时|
+|4|SAO |int |观测适宜度|
+|5| Temperature | int |温度（摄氏度）| 
+|6| TimePoint | int | 时间点，指本组数据距离当前时刻时长，单位为小时。| 
+|8| Prec_Type | String |是否降雨，无降雨则为none|
+|9|Humidity | int |湿度|
+|10|Wind | Object |风力相关数据|
+|11|Wind_Direction | String |风向|
+|12| Wind_Speed | int |风速|
+|13| Transparency|  Object |透明度相关数据|
+|14| Transparency_Value | int |透明度值|
+|15|Lifted_Index|  Object |抬升指数相关数据|
+|16|Lifted_Index_Valued | String |抬升指数|
+|17| CloudCover|  Object |云层厚度相关数据|
+|18| CloudCover_Value | String |云层厚度值|
+|19|Seeing | Object |视宁度相关数据|
+|20| Seeing_Value | int |视宁度值|
+|21| Explain| String |对每一种数据的解释|
+
+
+
+
+
+
+
 
 
 
