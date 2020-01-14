@@ -275,6 +275,7 @@ public class FunctionService {
         }
         return Map.of("SAO_Result", AllDataMap);
     }
+
     /**
      * @return :实时观测适宜度的Map值
      * @name: 观测适宜度评价算法
@@ -321,7 +322,6 @@ public class FunctionService {
         all = 0.6289 * hi + 0.1285 * mi + 0.2426 * lo;
         return (int) all;
     }
-
 
 
 }

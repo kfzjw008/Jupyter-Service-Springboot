@@ -25,14 +25,14 @@ public class question_classification {
     private String Title;//分类名称
     private String Description;//分类描述
 
-    public question_classification(int ide,String title, String description) {
-        id=ide;
+    public question_classification(int ide, String title, String description) {
+        id = ide;
         Title = title;
         Description = description;
     }
 
-    @OneToMany(mappedBy = "question_classification",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-    private List<Questions>    QuestionList;
+    @OneToMany(mappedBy = "question_classification", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Questions> QuestionList;
     @Column(columnDefinition = "DATETIME NOT NULL " + "DEFAULT CURRENT_TIMESTAMP ON UPDATE " + "CURRENT_TIMESTAMP", updatable = false, insertable = false)
     private LocalDateTime updateTime;//资料最后更新时间
     @Column(columnDefinition = "TIMESTAMP NOT NULL " + "DEFAULT CURRENT_TIMESTAMP", updatable = false, insertable = false)

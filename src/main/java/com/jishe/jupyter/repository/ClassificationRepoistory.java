@@ -12,7 +12,7 @@ import java.util.List;
  * @author: kfzjw008(Junwei Zhang)
  * @create: 2020-01-14 10:39
  **/
-public interface ClassificationRepoistory extends CustomizedRepoistory <question_classification, String>  {
+public interface ClassificationRepoistory extends CustomizedRepoistory<question_classification, String> {
 
     @Query("SELECT h FROM question_classification h ")
     List<question_classification> list();

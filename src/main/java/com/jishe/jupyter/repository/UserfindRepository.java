@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-public interface UserfindRepository extends CustomizedRepoistory <WechatUser, String> {
+public interface UserfindRepository extends CustomizedRepoistory<WechatUser, String> {
 
     @Query("SELECT h FROM WechatUser h WHERE h.OpenId=:id ")
     WechatUser find(@Param("id") String openid);

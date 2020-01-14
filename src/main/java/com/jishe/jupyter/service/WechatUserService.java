@@ -53,8 +53,8 @@ public class WechatUserService {
      **/
     public WechatUser Login(WechatUser user) {
         global glo = new global();
-        RequestUtil request= new RequestUtil();
-        String  resultString= request.CreateRequestUtil("https://api.weixin.qq.com/sns/jscode2session?appid=" + appid + "&secret=" + appsecret + "&js_code=" + user.getCode() + "&grant_type=authorization_code");
+        RequestUtil request = new RequestUtil();
+        String resultString = request.CreateRequestUtil("https://api.weixin.qq.com/sns/jscode2session?appid=" + appid + "&secret=" + appsecret + "&js_code=" + user.getCode() + "&grant_type=authorization_code");
         // 解析json
         JSONObject jsonObject = (JSONObject) JSONObject.parse(resultString);
         session_key = jsonObject.get("session_key") + "";
@@ -80,7 +80,7 @@ public class WechatUserService {
         } else {
             user.setOpenId(OpenId);
             user.setSession(session_key);
-            String token = util.createJWT(glo.getExpiration_time(),user);
+            String token = util.createJWT(glo.getExpiration_time(), user);
             System.out.println(token);
             user.setJWTToken(token);
             userRepository.save(user);
@@ -89,9 +89,6 @@ public class WechatUserService {
 
         return user;
     }
-
-
-
 
 
 }

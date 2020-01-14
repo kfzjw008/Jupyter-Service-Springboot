@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @program: jupyter
@@ -39,6 +40,9 @@ public class WechatUser {
     private LocalDateTime updateTime;//资料最后更新时间（上次登录时间）
     @Column(columnDefinition = "TIMESTAMP NOT NULL " + "DEFAULT CURRENT_TIMESTAMP", updatable = false, insertable = false)
     private LocalDateTime insertTime;//首次登录时间
+
+    @OneToMany(mappedBy = "WechatUser", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<UserRecord> UserRecord;
 
     public WechatUser(int id) {
         this.id = id;

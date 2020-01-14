@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
  * @author: kfzjw008(Junwei Zhang)
  * @create: 2020-01-14 14:30
  **/
-public interface QuestionFindRepoistory  extends CustomizedRepoistory <Questions, String> {
+public interface QuestionFindRepoistory extends CustomizedRepoistory<Questions, String> {
     @Query("SELECT h FROM Questions h WHERE h.id=:id ")
-   Questions  find(@Param("id") int id);
+    Questions find(@Param("id") int id);
 }

@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
  * @author: kfzjw008(Junwei Zhang)
  * @create: 2020-01-14 15:02
  **/
-public interface QuestionCountRepoistory  extends CustomizedRepoistory <Questions, String>  {
+public interface QuestionCountRepoistory extends CustomizedRepoistory<Questions, String> {
     @Query("SELECT count(h) FROM Questions h  ")
-    int  counts();
+    int counts();
 }

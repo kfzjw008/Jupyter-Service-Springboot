@@ -22,11 +22,12 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/login")
 public class LoginController {
-     @Autowired
-     private WechatUserService UserService;
+    @Autowired
+    private WechatUserService UserService;
+
     @GetMapping("/wxlogin")
     public Map getLogin(WechatUser user) {
-        user=UserService.Login(user);
+        user = UserService.Login(user);
         return Map.of("OpenId", user);
     }
 }

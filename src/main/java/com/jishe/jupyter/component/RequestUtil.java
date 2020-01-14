@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.net.URI;
+
 /**
  * @program: jupyter
  * @description: request请求工具类
@@ -18,7 +19,7 @@ import java.net.URI;
  * @create: 2020-01-13 11:04
  **/
 public class RequestUtil {
-    public String  CreateRequestUtil(String url) {
+    public String CreateRequestUtil(String url) {
         CloseableHttpClient httpclient = HttpClients.createDefault();
         CloseableHttpResponse response = null;
         String resultString = "";

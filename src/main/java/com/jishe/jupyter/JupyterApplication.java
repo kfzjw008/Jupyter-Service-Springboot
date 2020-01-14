@@ -20,10 +20,12 @@ public class JupyterApplication {
     void started() {
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Shanghai"));
     }
+
     public static void main(String[] args) {
         SpringApplication.run(JupyterApplication.class, args);
         System.out.println("SpringBoot 启动完成");
     }
+
     @Bean
     protected Hibernate5Module module() {
         Hibernate5Module module = new Hibernate5Module();

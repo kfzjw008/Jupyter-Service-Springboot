@@ -13,8 +13,8 @@ import org.springframework.data.repository.query.Param;
  * @author: kfzjw008(Junwei Zhang)
  * @create: 2020-01-14 11:58
  **/
-public interface QuestionRepository extends CustomizedRepoistory <Questions, String>   {
+public interface QuestionRepository extends CustomizedRepoistory<Questions, String> {
     @Query("SELECT h FROM Questions h WHERE h.question_classification.id=:id ")
-  //  Questions  find(@Param("id") int id, Pageable pageable);
+        //  Questions  find(@Param("id") int id, Pageable pageable);
     Page<Questions> findAll(@Param("id") int id, Pageable pageable);
 }
