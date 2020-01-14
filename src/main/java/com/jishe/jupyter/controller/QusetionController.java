@@ -42,6 +42,17 @@ public class QusetionController {
         //此处已经实现模块练习模块搜索
         return Map.of("Question_Result", QuestionService.GetQuestion(token, id));
     }
+    @PostMapping("/RandomGetQuestion")
+    public Map RandomGetQuestion(String token) {
+        //此处已经实现模块练习模块搜索
+        int id= 1+(int)(Math.random()*(QuestionService.GetQuestionCount(token)));
+        if (id==0){
+            return Map.of("Question_Result", "null");
+        }else{
+            return Map.of("Question_Result", QuestionService.GetQuestion(token, id));
+        }
+
+    }
 
     @PostMapping("/RecommendedExercises")
     public Map RecommendedExercises(String token) {
@@ -49,7 +60,9 @@ public class QusetionController {
         return Map.of("SAO", 1);
     }
 
-    @GetMapping("/Find")
+
+
+    @PostMapping("/Find")
     public Map Find(String token, String word) {
         //此处实现试题搜索模块
         return Map.of("SAO", 1);

@@ -3,16 +3,14 @@ package com.jishe.jupyter.service;
 import com.jishe.jupyter.component.JWT;
 import com.jishe.jupyter.entity.Questions;
 import com.jishe.jupyter.entity.question_classification;
-import com.jishe.jupyter.repository.ClassificationRepoistory;
-import com.jishe.jupyter.repository.QuestionFindRepoistory;
-import com.jishe.jupyter.repository.QuestionRepository;
+import com.jishe.jupyter.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import  com.jishe.jupyter.repository.QuestionFindRepoistory;
-
+import com.jishe.jupyter.repository.QuestionCountRepoistory;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +30,8 @@ public class QuestionService {
     private QuestionRepository QuestionRepository;
     @Autowired
     private QuestionFindRepoistory QuestionFindRepoistory;
-
+    @Autowired
+    private QuestionCountRepoistory QuestionCountRepoistory;
     /**
      * @name: 获取试题分类模块
      * @description: 用于获取所有试题的分类详情。
@@ -62,8 +61,8 @@ public class QuestionService {
     /**
      * @name: 获取指定的试题
      * @description: 根据ID值获取指定的试题服务。
-     * @input: WechatUser对象，一般只包括code
-     * @return :WechatUser对象
+     * @input: token和id
+     * @return :id对应的试题
      * @author: kfzjw008(Junwei Zhang)
      * @create: 2020-01-14 14:35
      **/
@@ -71,6 +70,19 @@ public class QuestionService {
         if (!VerifyJWT(token)) return null;
         return QuestionFindRepoistory.find(id);
     }
+
+    /**
+     * @name: 获取所有题目总数
+     * @description: 获取题库中所有题目的总共数量。
+     * @author: kfzjw008(Junwei Zhang)
+     * @create: 2020-01-14 14:35
+     **/
+    public int GetQuestionCount (String token){
+        if (!VerifyJWT(token)) return 0;
+        System.out.println(QuestionCountRepoistory.counts());
+        return QuestionCountRepoistory.counts();
+    }
+
 
     public static boolean VerifyJWT(String token) {
         JWT util = new JWT();
