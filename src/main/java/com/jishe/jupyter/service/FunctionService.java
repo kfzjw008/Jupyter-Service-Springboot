@@ -32,7 +32,7 @@ public class FunctionService {
      * @description: 实时数据模块，用于观测适宜度。
      * @input: WechatUser对象，一般只包括code
      * @author: kfzjw008(Junwei Zhang)
-     * @create: 2020-01-08 22:35
+     * @create: 2020-01-10 22:35
      **/
     public Map GetSAO(Double LON, Double LAT) {
         global glo = new global();
@@ -275,7 +275,14 @@ public class FunctionService {
         }
         return Map.of("SAO_Result", AllDataMap);
     }
-
+    /**
+     * @return :实时观测适宜度的Map值
+     * @name: 观测适宜度评价算法
+     * @description: 观测适宜度的计算。
+     * @input: 各种观测适宜度评价指标。
+     * @author: kfzjw008(Junwei Zhang)
+     * @create: 2020-01-13 12:35
+     **/
     private int SaoAlgorithm(double cloudcoverapi, double seeingapi, double transparencyapi, double lifted_indexapi, double rh2m, double wind10m, double temp2m, double prec_type, double aqiapi) {
         double hi, mi, lo;
         double all;
@@ -314,4 +321,7 @@ public class FunctionService {
         all = 0.6289 * hi + 0.1285 * mi + 0.2426 * lo;
         return (int) all;
     }
+
+
+
 }

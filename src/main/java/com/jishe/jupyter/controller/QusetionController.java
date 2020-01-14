@@ -1,9 +1,11 @@
 package com.jishe.jupyter.controller;
 
+import com.jishe.jupyter.service.QuestionService;
+import com.jishe.jupyter.service.WechatUserService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.Map;
@@ -18,21 +20,30 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/question")
 public class QusetionController {
+    @Autowired
+    private QuestionService QuestionService;
 
-
-    @GetMapping("/ModuleExercises")
+    @PostMapping("/ModuleExercises")
     public Map ModuleExercises(String token) {
-        //此处实现模块练习模块搜索
-        return Map.of("SAO", 1);
+        //此处已经实现模块练习模块搜索
+        return Map.of("Module", QuestionService.GetClassification(token));
+    }
+    //此处实现模块练习试题搜索，基于页码和模块编号
+    @PostMapping("/ModuleExercisesDetails")
+    public Map ModuleExercisesDetails(String token, int module, @RequestParam(value = "page", defaultValue = "1") Integer page,
+                                      @RequestParam(value = "size", defaultValue = "10") Integer size) {
+        PageRequest request = PageRequest.of(page - 1, size);
+
+        return Map.of("ModuleExercisesDetails", QuestionService.GetModuleExercises(token, module, request));
     }
 
-    @GetMapping("/ModuleExercisesDetails")
-    public Map ModuleExercisesDetails(String token, int module, int page) {
-        //此处实现模块练习试题搜索，基于页码和模块编号
-        return Map.of("SAO", 1);
+    @PostMapping("/GetQuestion")
+    public Map GetQuestion(String token,int id) {
+        //此处已经实现模块练习模块搜索
+        return Map.of("Question_Result", QuestionService.GetQuestion(token, id));
     }
 
-    @GetMapping("/RecommendedExercises")
+    @PostMapping("/RecommendedExercises")
     public Map RecommendedExercises(String token) {
         //此处实现随机推荐练习模块
         return Map.of("SAO", 1);

@@ -1,9 +1,11 @@
 package com.jishe.jupyter.service;
 
+import antlr.Token;
 import com.alibaba.fastjson.JSONObject;
 import com.jishe.jupyter.component.JWT;
 import com.jishe.jupyter.component.RequestUtil;
 import com.jishe.jupyter.entity.WechatUser;
+import com.jishe.jupyter.entity.question_classification;
 import com.jishe.jupyter.repository.UserRepository;
 import com.jishe.jupyter.repository.UserfindRepository;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.net.URI;
+import java.util.List;
 
 import com.jishe.jupyter.global;
 
@@ -70,6 +73,7 @@ public class WechatUserService {
             LoginUser.setOpenId(OpenId);
             LoginUser.setSession(session_key);
             String token = util.createJWT(glo.getExpiration_time(), LoginUser);
+            System.out.println(token);
             LoginUser.setJWTToken(token);
             user = LoginUser;
             userRepository.save(LoginUser);
@@ -77,10 +81,17 @@ public class WechatUserService {
             user.setOpenId(OpenId);
             user.setSession(session_key);
             String token = util.createJWT(glo.getExpiration_time(),user);
+            System.out.println(token);
             user.setJWTToken(token);
             userRepository.save(user);
             userRepository.refresh(user);
         }
+
         return user;
     }
+
+
+
+
+
 }
