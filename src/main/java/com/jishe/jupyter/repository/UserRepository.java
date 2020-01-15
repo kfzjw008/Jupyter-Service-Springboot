@@ -9,9 +9,7 @@ import java.util.List;
 
 @Repository
 public interface UserRepository extends CustomizedRepoistory<WechatUser, String> {
-//指定学生全部资料
 
     @Query("SELECT h FROM WechatUser h ")
     List<WechatUser> list(@Param("OpenId") String OpenId);
 }
-

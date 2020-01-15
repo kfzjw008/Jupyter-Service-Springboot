@@ -2,6 +2,7 @@ package com.jishe.jupyter.service;
 
 import com.jishe.jupyter.component.JWT;
 import com.jishe.jupyter.entity.Questions;
+import com.jishe.jupyter.entity.UserRecord;
 import com.jishe.jupyter.entity.question_classification;
 import com.jishe.jupyter.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,10 @@ public class QuestionService {
     private QuestionCountRepoistory QuestionCountRepoistory;
     @Autowired
     private QuestionSearchRepository QuestionSearchRepository;
+    @Autowired
+    private QuestionRecordRepoistory QuestionRecordRepoistory;
+    @Autowired
+    private UserfindRepository userfindRepository;
 
     /**
      * @return :按照页数依次返回的试题详情。
@@ -80,7 +85,7 @@ public class QuestionService {
      * @author: kfzjw008(Junwei Zhang)
      * @create: 2020-01-14 14:35
      **/
-    public  int GetQuestionCount(String token) {
+    public int GetQuestionCount(String token) {
         if (!VerifyJWT(token)) return 0;
         System.out.println(QuestionCountRepoistory.counts());
         return QuestionCountRepoistory.counts();
@@ -92,12 +97,35 @@ public class QuestionService {
      * @author: kfzjw008(Junwei Zhang)
      * @create: 2020-01-14 19:35
      **/
-    public Page<Questions> GetQuestionSearch(String token,String word, Pageable page) {
+    public Page<Questions> GetQuestionSearch(String token, String word, Pageable page) {
 
         if (!VerifyJWT(token)) return null;
         System.out.println(QuestionCountRepoistory.counts());
-        Page<Questions> QuestionsSearchPage = QuestionSearchRepository.findAllBy("%"+word+"%", page);
+        Page<Questions> QuestionsSearchPage = QuestionSearchRepository.findAllBy("%" + word + "%", page);
         return QuestionsSearchPage;
+    }
+
+    /**
+     * @name: 提交试题记录
+     * @description: 提交用户的试题记录。
+     * @author: kfzjw008(Junwei Zhang)
+     * @create: 2020-01-15 11:35
+     **/
+    public int PutPrcacticeRecord(String token,int id,String Source ,String answer,String OpenId) {
+        if (!VerifyJWT(token)) return 0;
+        UserRecord UserRecords=new UserRecord();
+        UserRecords.setQuestions(QuestionFindRepoistory.find(id));
+        UserRecords.setQuestionSource(Source);
+        UserRecords.setUserAnswer(answer);
+        UserRecords.setWechatUser(userfindRepository.find(OpenId));
+       if( QuestionFindRepoistory.find(id).getCorrect_Answer().equals(answer)){
+           UserRecords.setT_OR_F(true);
+       }else{
+           UserRecords.setT_OR_F(false);
+       }
+        QuestionRecordRepoistory.save(UserRecords);
+        QuestionRecordRepoistory.refresh(UserRecords);
+        return 1;
     }
 
 

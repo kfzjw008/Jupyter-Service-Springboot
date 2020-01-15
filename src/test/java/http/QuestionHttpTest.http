@@ -28,3 +28,10 @@ POST http://localhost:8080/api/question/RandomGetQuestion?token=eyJhbGciOiJIUzI1
 POST http://localhost:8080/api/question/Search?token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJvY0NfdTBPMU9HVzN5dUdSOGhrc2FtQm5feER3IiwiaWQiOjQsImV4cCI6MTU3OTA0NTM1OCwiT3BlbklkIjoib2NDX3UwTzFPR1czeXVHUjhoa3NhbUJuX3hEdyIsImlhdCI6MTU3OTAwOTM1OCwianRpIjoiNCIsIk5pY2tuYW1lIjoi5Yeg5L2V5Y-45LukIn0._0mTS0ZXW52dyW5N615wI8Q5wCYkFTU1soi00w3KKlE&word=金星
 
 ###
+POST http://localhost:8080/api/question/PutRecords?token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJvY0NfdTBMVlR6WW5rQjBZd3BkLXB3SGhxeHhNIiwiaWQiOjAsImV4cCI6MTU3OTA5ODU2MywiT3BlbklkIjoib2NDX3UwTFZUellua0IwWXdwZC1wd0hocXh4TSIsImlhdCI6MTU3OTA2MjU2MywianRpIjoiMCIsIk5pY2tuYW1lIjoi54On54Ok5ZCX77yfIn0.1EiFADwc2kpZ2Tn1qjro8zFLDsSE36dAHPJDtG6AgME&id=174&source=模块练习&answer=B&openid=ocC_u0LVTzYnkB0Ywpd-pwHhqxxM
+
+###
+
+GET http://localhost:8080/images/1.jpg
+
+###

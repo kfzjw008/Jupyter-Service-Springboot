@@ -40,13 +40,13 @@ public class QusetionController {
 
     @PostMapping("/GetQuestion")
     public Map GetQuestion(String token, int id) {
-        //此处已经实现模块练习模块搜索
+        //此处已经实现指定题目搜索
         return Map.of("Question_Result", QuestionService.GetQuestion(token, id));
     }
 
     @PostMapping("/RandomGetQuestion")
     public Map RandomGetQuestion(String token) {
-        //此处已经实现模块练习模块搜索
+        //此处已经实现随机获得试题
         int id = 1 + (int) (Math.random() * (QuestionService.GetQuestionCount(token)));
         if (id == 0) {
             return Map.of("Question_Result", "null");
@@ -65,9 +65,16 @@ public class QusetionController {
     @PostMapping("/Search")
     public Map Find(String token, String word, @RequestParam(value = "page", defaultValue = "1") Integer page,
                     @RequestParam(value = "size", defaultValue = "10") Integer size ) {
-        //此处实现试题搜索模块
+        //此处已经实现试题搜索模块
         PageRequest request = PageRequest.of(page - 1, size);
         return Map.of("SearchResult", QuestionService.GetQuestionSearch(token,word,request));
     }
+
+    @PostMapping("/PutRecords")
+    public Map PutRecords(String token,int id,String source ,String answer,String openid) {
+        //此处实现随机推荐练习模块
+        return Map.of("PutResult", QuestionService.PutPrcacticeRecord(token, id, source, answer, openid));
+    }
+
 
 }
