@@ -34,7 +34,6 @@ public class QusetionController {
     public Map ModuleExercisesDetails(String token, int module, @RequestParam(value = "page", defaultValue = "1") Integer page,
                                       @RequestParam(value = "size", defaultValue = "10") Integer size) {
         PageRequest request = PageRequest.of(page - 1, size);
-
         return Map.of("ModuleExercisesDetails", QuestionService.GetModuleExercises(token, module, request));
     }
 
@@ -72,7 +71,7 @@ public class QusetionController {
 
     @PostMapping("/PutRecords")
     public Map PutRecords(String token,int id,String source ,String answer,String openid) {
-        //此处实现随机推荐练习模块
+        //此处实现推送练习记录模块
         return Map.of("PutResult", QuestionService.PutPrcacticeRecord(token, id, source, answer, openid));
     }
 

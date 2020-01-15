@@ -55,9 +55,6 @@ SAO——
 |2| Province | String |所在的省份|
 |3|SAO_Data | Object |相关观测适宜度数据（提供24组，每三小时提供一组）|
 
-
-#### 输出参数
-
 SAO_Result——
 
 | 序号 | 参数名 | 参数类型 |解释 |
@@ -82,6 +79,123 @@ SAO_Result——
 |19|Seeing | Object |视宁度相关数据|
 |20| Seeing_Value | int |视宁度值|
 |21| Explain| String |对每一种数据的解释|
+
+
+## 用户试题API
+
+### http://Main/api/question/ModuleExercises
+登录用户查询试题模块。
+
+#### 输入参数
+
+| 序号 | 参数名 | 参数类型 |解释 |
+| ------ | ------ | ------ | ------ |
+|1| token | String |用户token值，用于验证用户登录身份/
+
+#### 输出参数
+
+Module——
+
+| 序号 | 参数名 | 参数类型 |解释 |
+| ------ | ------ | ------ | ------ |
+|1| id | int |试题分类编号 | 
+|2| Title | String |分类名称|
+|3|Description |  String  |分类描述|
+
+
+### http://Main/api/question/ModuleExercisesDetails
+查询分类下所有试题
+
+#### 输入参数
+
+| 序号 | 参数名 | 参数类型 |解释 |
+| ------ | ------ | ------ | ------ |
+|1| token | String |用户token值，用于验证用户登录身份/
+|1| module | int |试题分类编号/
+|1| page | int |页码，每页显示10题/
+
+#### 输出参数
+
+ModuleExercisesDetails——
+
+依次返回试题Object类（包括所有试题信息）和当前的页码相关信息，（页数，是否为第一页或者最后一页等）。
+
+
+### http://Main/api/question/GetQuestion
+根据试题ID值查询试题。
+
+#### 输入参数
+
+| 序号 | 参数名 | 参数类型 |解释 |
+| ------ | ------ | ------ | ------ |
+|1| token | String |用户token值，用于验证用户登录身份/
+|2| id | int |试题编号/
+
+#### 输出参数
+
+Question_Result——
+
+返回试题Object类（包括所有试题信息）。
+
+
+### http://Main/api/question/RandomGetQuestion
+随机获得试题。
+
+#### 输入参数
+
+| 序号 | 参数名 | 参数类型 |解释 |
+| ------ | ------ | ------ | ------ |
+|1| token | String |用户token值，用于验证用户登录身份/
+
+#### 输出参数
+
+Question_Result——
+
+返回随机试题的Object类（包括所有试题信息）。
+
+
+### http://Main/api/question/Search
+试题模糊搜索
+
+#### 输入参数
+
+| 序号 | 参数名 | 参数类型 |解释 |
+| ------ | ------ | ------ | ------ |
+|1| token | String |用户token值，用于验证用户登录身份/
+|1| word | String |搜索的内容 /
+|1| page | int |页码，每页显示10题/
+
+
+#### 输出参数
+
+SearchResult——
+
+依次返回试题Object类（包括所有试题信息）和当前的页码相关信息，（页数，是否为第一页或者最后一页等）。
+
+
+### http://Main/api/question/PutRecords
+试题模糊搜索
+
+#### 输入参数
+
+| 序号 | 参数名 | 参数类型 |解释 |
+| ------ | ------ | ------ | ------ |
+|1| token | String |用户token值，用于验证用户登录身份/
+|1| id | int |试题编号/
+|1| source | String |练习试题来源/
+|1| answer | String |试题答案 /
+|1| openid | int |用户的openid，用于确定用户身份信息/
+
+
+#### 输出参数
+
+PutResult——
+
+1或者0。  
+1为推送成功，0为推送失败。
+
+
+
 
 
 
