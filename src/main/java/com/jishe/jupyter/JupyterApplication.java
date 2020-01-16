@@ -5,6 +5,8 @@ import com.jishe.jupyter.repository.impl.CustomizedRespoistoryImpl;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -15,7 +17,7 @@ import java.util.TimeZone;
 @SpringBootApplication
 @EnableJpaRepositories(repositoryBaseClass = CustomizedRespoistoryImpl.class)
 @EnableScheduling
-public class JupyterApplication {
+public class JupyterApplication   extends SpringBootServletInitializer {
     @PostConstruct
     void started() {
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Shanghai"));
@@ -32,5 +34,11 @@ public class JupyterApplication {
         // 序列化延迟加载对象的ID
         module.enable(Hibernate5Module.Feature.SERIALIZE_IDENTIFIER_FOR_LAZY_NOT_LOADED_OBJECTS);
         return module;
+    }
+
+    @Override//为了打包springboot项目
+    protected SpringApplicationBuilder configure(
+            SpringApplicationBuilder builder) {
+        return builder.sources(this.getClass());
     }
 }

@@ -104,6 +104,9 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>com.jishe.jupyter.JupyterApplication</mainClass>
+                </configuration>
             </plugin>
         </plugins>
     </build>

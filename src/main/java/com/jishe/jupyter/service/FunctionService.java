@@ -271,7 +271,7 @@ public class FunctionService {
             TransparencyDataMap.put("Transparency_Value", transparencys.get(i));
             TransparencyDataMap.put("Explain", stranss.get(i));
             BasicDataMap.put("Transparency", (TransparencyDataMap));
-            AllDataMap.put(i, (BasicDataMap));
+            AllDataMap.put("P"+i, (BasicDataMap));
         }
         return Map.of("SAO_Result", AllDataMap);
     }
