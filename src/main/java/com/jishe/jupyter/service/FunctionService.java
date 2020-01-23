@@ -4,7 +4,14 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.jishe.jupyter.component.RequestUtil;
+import com.jishe.jupyter.entity.Starss;
 import com.jishe.jupyter.global;
+import com.jishe.jupyter.repository.StarRepoistory;
+import com.jishe.jupyter.repository.StarssRepoistory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +31,14 @@ import static java.lang.Math.exp;
 @Service
 @Transactional
 public class FunctionService {
+
+
+    @Autowired
+    private StarRepoistory starRepoistory;
+    @Autowired
+    private ElasticsearchTemplate template;
+
+    private StarssRepoistory StarssRepoistory;
 
 
     /**
@@ -323,5 +338,13 @@ public class FunctionService {
         return (int) all;
     }
 
+
+
+    public int Search(String string,int page) throws  Exception{
+
+        global.StarssRepoistory.testQueryStringQuery(string,page);
+
+        return 0;
+    }
 
 }

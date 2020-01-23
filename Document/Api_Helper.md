@@ -174,7 +174,7 @@ SearchResult——
 
 
 ### http://Main/api/question/PutRecords
-试题模糊搜索
+试题练习记录提交
 
 #### 输入参数
 

@@ -1,12 +1,12 @@
 package com.jishe.jupyter.controller;
 
-import com.jishe.jupyter.entity.WechatUser;
 import com.jishe.jupyter.service.FunctionService;
-import com.jishe.jupyter.service.WechatUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
@@ -24,12 +24,19 @@ import java.util.Map;
 public class FunctionController {
     @Autowired
     private FunctionService FunctionService;
-
     @GetMapping("/SearchSAO")
     public Map getSAO(Double LON, Double LAT) {
         //此处实现观测适宜度评价计算
         return FunctionService.GetSAO(LON, LAT);
     }
+    @GetMapping("/StarSearch")
+    public Map test(String string,int page) throws Exception {
+        //此处实现观测适宜度评价计算
+        FunctionService.Search(string,page);
+            return    Map.of("Result","1");
+    }
+
+
 
     @GetMapping("/SearchSunriseset")
     public Map getSunriseset(Date D, String city) {

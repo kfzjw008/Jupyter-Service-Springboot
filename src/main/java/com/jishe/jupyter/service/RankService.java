@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jishe.jupyter.repository.RankList_CurrentQuestion_Repoistory;
+
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +30,7 @@ public class RankService {
     private RankList_AllQuestion_Repoistory rankList_allQuestion_repoistory;
     @Autowired
     private RankList_CurrentQuestion_Repoistory RankList_CurrentQuestion_Repoistory;
+
     /**
      * * @name: 总练习数量排行
      *
@@ -39,6 +41,7 @@ public class RankService {
     public Page<ranklist_allquestion> allquestions(Pageable page) {
         return rankList_allQuestion_repoistory.findAll(page);
     }
+
     public Page<ranklist_correctrate> CurrentQuestion(Pageable page) {
         return RankList_CurrentQuestion_Repoistory.findAll(page);
     }

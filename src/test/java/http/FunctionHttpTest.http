@@ -10,3 +10,7 @@ GET http://localhost:8080/api/function/SearchSAO?LON=121&LAT=37
 //lon代表经度，LAT代表纬度
 
 ###
+
+GET http://localhost:8080/api/function/StarSearch?string=仙&page=1
+
+###

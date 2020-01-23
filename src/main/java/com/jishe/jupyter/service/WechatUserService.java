@@ -1,27 +1,15 @@
 package com.jishe.jupyter.service;
 
-import antlr.Token;
 import com.alibaba.fastjson.JSONObject;
 import com.jishe.jupyter.component.JWT;
 import com.jishe.jupyter.component.RequestUtil;
 import com.jishe.jupyter.entity.WechatUser;
-import com.jishe.jupyter.entity.question_classification;
+import com.jishe.jupyter.global;
 import com.jishe.jupyter.repository.UserRepository;
 import com.jishe.jupyter.repository.UserfindRepository;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.net.URI;
-import java.util.List;
-
-import com.jishe.jupyter.global;
 
 /**
  * @program: jupyter

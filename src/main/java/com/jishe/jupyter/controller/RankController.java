@@ -1,6 +1,5 @@
 package com.jishe.jupyter.controller;
 
-import com.jishe.jupyter.service.QuestionService;
 import com.jishe.jupyter.service.RankService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,14 +26,15 @@ public class RankController {
     private RankService RankService;
 
     @PostMapping("/AllQuestion")
-    public Map Allquestion( @RequestParam(value = "page", defaultValue = "1") Integer page,
-                                      @RequestParam(value = "size", defaultValue = "10") Integer size) {
+    public Map Allquestion(@RequestParam(value = "page", defaultValue = "1") Integer page,
+                           @RequestParam(value = "size", defaultValue = "10") Integer size) {
         PageRequest request = PageRequest.of(page - 1, size);
         return Map.of("AllQuestion", RankService.allquestions(request));
     }
+
     @PostMapping("/CorrectRate")
-    public Map CorrectRatequestion( @RequestParam(value = "page", defaultValue = "1") Integer page,
-                            @RequestParam(value = "size", defaultValue = "10") Integer size) {
+    public Map CorrectRatequestion(@RequestParam(value = "page", defaultValue = "1") Integer page,
+                                   @RequestParam(value = "size", defaultValue = "10") Integer size) {
         PageRequest request = PageRequest.of(page - 1, size);
         return Map.of("CorrectRate", RankService.CurrentQuestion(request));
     }

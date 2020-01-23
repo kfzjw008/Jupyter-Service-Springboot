@@ -2,7 +2,6 @@ package com.jishe.jupyter.repository;
 
 import com.jishe.jupyter.entity.question_classification;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
