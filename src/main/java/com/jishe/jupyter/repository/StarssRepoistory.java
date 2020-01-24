@@ -26,6 +26,7 @@ import org.elasticsearch.transport.client.PreBuiltTransportClient;
 
 
 import java.net.InetAddress;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -54,8 +55,10 @@ public  class StarssRepoistory  {
             .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("127.0.0.1"), 9303));
 }
 
-    private void search(QueryBuilder queryBuilder,int page) throws Exception {
+    private  Map search(QueryBuilder queryBuilder,int page) throws Exception {
         //执行查询
+        Map<Object, Object> AllDataMap = new HashMap<Object, Object>();
+
         SearchResponse searchResponse = client.prepareSearch("stellar_data")
                 .setTypes("Starss")
                 .setQuery(queryBuilder)
@@ -68,29 +71,51 @@ public  class StarssRepoistory  {
         SearchHits searchHits = searchResponse.getHits();
         //取查询结果的总记录数
         System.out.println("查询结果总记录数：" + searchHits.getTotalHits());
+        AllDataMap.put("count", searchHits.getTotalHits());
         //查询结果列表
+        int i=0;
         Iterator<SearchHit> iterator = searchHits.iterator();
         while(iterator.hasNext()) {
+            i++;
+            Map<Object, Object> BasicDataMap = new HashMap<Object, Object>();
             SearchHit searchHit = iterator.next();
             //打印文档对象，以json格式输出
             System.out.println(searchHit.getSourceAsString());
             //取文档的属性
             System.out.println("-----------文档的属性");
             Map<String, Object> document = searchHit.getSource();
+            BasicDataMap.put("id", document.get("id"));
+            BasicDataMap.put("name", document.get("name"));
+            BasicDataMap.put("bayer", document.get("bayer"));
+            BasicDataMap.put("fransted", document.get("fransted"));
+            BasicDataMap.put("variable_star", document.get("variable_star"));
+            BasicDataMap.put("hd", document.get("hd"));
+            BasicDataMap.put("hip", document.get("hip"));
+            BasicDataMap.put("right_ascension", document.get("right_ascension"));
+            BasicDataMap.put("declination", document.get("declination"));
+            BasicDataMap.put("apparent_magnitude", document.get("apparent_magnitude"));
+            BasicDataMap.put("absolute_magnitude", document.get("absolute_magnitude"));
+            BasicDataMap.put("distance", document.get("distance"));
+            BasicDataMap.put("classification", document.get("classification"));
+            BasicDataMap.put("notes", document.get("notes"));
+            BasicDataMap.put("constellation", document.get("constellation"));
+            BasicDataMap.put("ancient_chinese_name", document.get("ancient_chinese_name"));
+            AllDataMap.put("Data"+i, BasicDataMap);
             System.out.println(document.get("id"));
-            System.out.println(document.get("title"));
-            System.out.println(document.get("content"));
+            System.out.println(document.get("name"));
+            System.out.println(document.get("bayer"));
 
         }
         //关闭client
        // client.close();
+        return AllDataMap;
     }
-    public void testQueryStringQuery(String string,int page) throws Exception {
+    public Map testQueryStringQuery(String string,int page) throws Exception {
         //创建一个QueryBuilder对象
         QueryBuilder queryBuilder = QueryBuilders.multiMatchQuery(string, "name", "ancient_chinese_name", "absolute_magnitude");
 
         //执行查询
-        search(queryBuilder,page);
+       return search(queryBuilder,page);
     }
 
 }

@@ -11,6 +11,6 @@ GET http://localhost:8080/api/function/SearchSAO?LON=121&LAT=37
 
 ###
 
-GET http://localhost:8080/api/function/StarSearch?string=仙&page=1
+GET http://localhost:8080/api/function/StarSearch?string=仙后&page=0
 
 ###

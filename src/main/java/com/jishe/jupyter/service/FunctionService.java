@@ -340,11 +340,11 @@ public class FunctionService {
 
 
 
-    public int Search(String string,int page) throws  Exception{
+    public Map Search(String string,int page) throws  Exception{
 
-        global.StarssRepoistory.testQueryStringQuery(string,page);
+       return global.StarssRepoistory.testQueryStringQuery(string,page);
 
-        return 0;
+
     }
 
 }

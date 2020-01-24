@@ -31,9 +31,8 @@ public class FunctionController {
     }
     @GetMapping("/StarSearch")
     public Map test(String string,int page) throws Exception {
-        //此处实现观测适宜度评价计算
-        FunctionService.Search(string,page);
-            return    Map.of("Result","1");
+        //此处实现恒星查询
+            return    Map.of("Result", FunctionService.Search(string,page));
     }
 
 
