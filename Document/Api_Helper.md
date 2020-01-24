@@ -1,5 +1,7 @@
 # Api_Helper(接口使用文档)
 
+
+
 ## 简介
 
 记录开发接口及其使用文档,其中Main代表主域名。
@@ -79,6 +81,21 @@ SAO_Result——
 |19|Seeing | Object |视宁度相关数据|
 |20| Seeing_Value | int |视宁度值|
 |21| Explain| String |对每一种数据的解释|
+
+
+### http://Main/api/function/StarSearch?string=仙后&page=0
+恒星查询模块，基于elastic search的分布式集群查询。  
+
+#### 输入参数
+
+| 序号 | 参数名 | 参数类型 |解释 |
+| ------ | ------ | ------ | ------ |
+|1| string | String |搜索关键词
+|2| page | int |页码
+
+#### 输出参数
+
+关于恒星的详细信息，此处略。
 
 
 ## 用户试题API
