@@ -14,3 +14,20 @@ GET http://localhost:8080/api/function/SearchSAO?LON=121&LAT=37
 GET http://localhost:8080/api/function/StarSearch?string=仙后&page=0
 
 ###
+
+//八大行星数据测试
+GET http://localhost:8080/api/function/EightPlanets
+
+###
+///int year,int month,int day ,int zone,double lon,double lat
+GET http://localhost:8080/api/function/SearchSunriseset?year=2020&month=1&day=27&zone=8&lon=116.38&lat=39.9
+
+###
+
+GET http://localhost:8080/api/function/SearchSMoonPhase?year=2020&month=1&day=27
+
+
+###
+
+GET http://localhost:8080/api/function/Calendar?year=2020&month=1&day=30
+###

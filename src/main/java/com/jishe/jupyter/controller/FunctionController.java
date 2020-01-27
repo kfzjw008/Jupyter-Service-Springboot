@@ -35,13 +35,25 @@ public class FunctionController {
             return    Map.of("Result", FunctionService.Search(string,page));
     }
 
-
-
-    @GetMapping("/SearchSunriseset")
-    public Map getSunriseset(Date D, String city) {
-        //此处实现日出日落日期计算
-        return Map.of("SAO", "1");
+    @GetMapping("/EightPlanets")
+    public Map GetEightPlanets() {
+        //此处实现八大行星数值返回
+        return Map.of("Result", FunctionService.GetEightPlanets());
     }
 
-
+    @GetMapping("/SearchSunriseset")
+    public Map getSunriseset(int year,int month,int day ,int zone,double lon,double lat) {
+        //此处实现日出日落日期计算
+        return Map.of("Result",  FunctionService.GetSunriseset(year,month,day,zone,lon,lat));
+    }
+    @GetMapping("/SearchSMoonPhase")
+    public Map getMoonPhase(int year,int month,int day ) {
+        //此处实现月相检索
+        return Map.of("Result",  FunctionService.GetMoonPhase(year,month,day));
+    }
+    @GetMapping("/Calendar")
+    public Map getCalendar(int year,int month,int day ) {
+        //此处实现月相检索
+        return Map.of("Result",  FunctionService.GetCalendar(year,month,day));
+    }
 }

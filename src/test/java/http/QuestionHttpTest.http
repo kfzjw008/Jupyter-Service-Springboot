@@ -34,3 +34,7 @@ POST http://localhost:8080/api/question/PutRecords?token=eyJhbGciOiJIUzI1NiJ9.ey
 GET http://localhost:8080/images/1.jpg
 
 ###
+
+GET http://localhost:8080/images/moon/1_m15.jpg
+
+###
