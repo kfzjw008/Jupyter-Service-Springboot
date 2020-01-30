@@ -1,18 +1,13 @@
 package com.jishe.jupyter.service;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.jishe.jupyter.component.RequestUtil;
 import com.jishe.jupyter.entity.Calendar;
-import com.jishe.jupyter.entity.Starss;
 import com.jishe.jupyter.global;
 import com.jishe.jupyter.repository.CalendarRepoistory;
-import com.jishe.jupyter.repository.StarRepoistory;
 import com.jishe.jupyter.repository.StarssRepoistory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,8 +31,7 @@ public class FunctionService {
     @Autowired
     private CalendarRepoistory calendarRepoistory;
 
-    @Autowired
-    private StarRepoistory starRepoistory;
+
     @Autowired
     private ElasticsearchTemplate template;
 
