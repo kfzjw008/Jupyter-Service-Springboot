@@ -1,6 +1,8 @@
 package com.jishe.jupyter.controller;
 
 import com.jishe.jupyter.service.QuestionService;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.PostConstruct;
 import java.util.Map;
 
 /**
@@ -23,10 +26,35 @@ import java.util.Map;
 public class QusetionController {
     @Autowired
     private QuestionService QuestionService;
+    @Autowired
+    MeterRegistry registry;
+    private Counter ModuleExercises;
+    private Counter ModuleExercisesDetails;
+    private Counter GetQuestion;
+    private Counter RandomGetQuestion;
+    private Counter RecommendedExercises;
+    private Counter Search;
+    private Counter PutRecords;
+
+    @PostConstruct
+    private void init(){
+        ModuleExercises = registry.counter("app_requests_method_count", "method", "ModuleExercisesController.core");
+        ModuleExercisesDetails = registry.counter("app_requests_method_count", "method", "ModuleExercisesDetailsController.core");
+        GetQuestion = registry.counter("app_requests_method_count", "method", "GetQuestionController.core");
+        RandomGetQuestion = registry.counter("app_requests_method_count", "method", "RandomGetQuestionController.core");
+        RecommendedExercises = registry.counter("app_requests_method_count", "method", "RecommendedExercisesController.core");
+        Search = registry.counter("app_requests_method_count", "method", "SearchController.core");
+        PutRecords = registry.counter("app_requests_method_count", "method", "PutRecordsController.core");
+    }
 
     @PostMapping("/ModuleExercises")
     public Map ModuleExercises(String token) {
         //此处已经实现模块练习模块搜索
+        try {
+            ModuleExercises.increment();
+        } catch (Exception e) {
+            return (Map) e;
+        }
         return Map.of("Module", QuestionService.GetClassification(token));
     }
 
@@ -34,6 +62,11 @@ public class QusetionController {
     @PostMapping("/ModuleExercisesDetails")
     public Map ModuleExercisesDetails(String token, int module, @RequestParam(value = "page", defaultValue = "1") Integer page,
                                       @RequestParam(value = "size", defaultValue = "10") Integer size) {
+        try {
+            ModuleExercisesDetails.increment();
+        } catch (Exception e) {
+            return (Map) e;
+        }
         PageRequest request = PageRequest.of(page - 1, size);
         return Map.of("ModuleExercisesDetails", QuestionService.GetModuleExercises(token, module, request));
     }
@@ -41,12 +74,22 @@ public class QusetionController {
     @PostMapping("/GetQuestion")
     public Map GetQuestion(String token, int id) {
         //此处已经实现指定题目搜索
+        try {
+            GetQuestion.increment();
+        } catch (Exception e) {
+            return (Map) e;
+        }
         return Map.of("Question_Result", QuestionService.GetQuestion(token, id));
     }
 
     @PostMapping("/RandomGetQuestion")
     public Map RandomGetQuestion(String token) {
         //此处已经实现随机获得试题
+        try {
+            RandomGetQuestion.increment();
+        } catch (Exception e) {
+            return (Map) e;
+        }
         int id = 1 + (int) (Math.random() * (QuestionService.GetQuestionCount(token)));
         if (id == 0) {
             return Map.of("Question_Result", "null");
@@ -59,6 +102,11 @@ public class QusetionController {
     @PostMapping("/RecommendedExercises")
     public Map RecommendedExercises(String token) {
         //此处实现随机推荐练习模块
+        try {
+            RecommendedExercises.increment();
+        } catch (Exception e) {
+            return (Map) e;
+        }
         return Map.of("SAO", 1);
     }
 
@@ -66,6 +114,11 @@ public class QusetionController {
     public Map Find(String token, String word, @RequestParam(value = "page", defaultValue = "1") Integer page,
                     @RequestParam(value = "size", defaultValue = "10") Integer size ) {
         //此处已经实现试题搜索模块
+        try {
+            Search.increment();
+        } catch (Exception e) {
+            return (Map) e;
+        }
         PageRequest request = PageRequest.of(page - 1, size);
         return Map.of("SearchResult", QuestionService.GetQuestionSearch(token,word,request));
     }
@@ -73,6 +126,11 @@ public class QusetionController {
     @PostMapping("/PutRecords")
     public Map PutRecords(String token,int id,String source ,String answer,String openid) {
         //此处实现推送练习记录模块
+        try {
+            PutRecords.increment();
+        } catch (Exception e) {
+            return (Map) e;
+        }
         return Map.of("PutResult", QuestionService.PutPrcacticeRecord(token, id, source, answer, openid));
     }
 

@@ -19,7 +19,7 @@ GET http://localhost:8080/api/function/StarSearch?string=仙后&page=0
 GET http://localhost:8080/api/function/EightPlanets
 
 ###
-///int year,int month,int day ,int zone,double lon,double lat
+///日出日落
 GET http://localhost:8080/api/function/SearchSunriseset?year=2020&month=1&day=27&zone=8&lon=116.38&lat=39.9
 
 ###
