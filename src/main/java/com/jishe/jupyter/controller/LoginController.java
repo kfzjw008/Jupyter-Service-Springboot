@@ -30,12 +30,13 @@ public class LoginController {
     private Counter wxlogin;
 
     @PostConstruct
-    private void init(){
+    private void init() {
         wxlogin = registry.counter("app_requests_method_count", "method", "wxloginController.core");
     }
+
     @GetMapping("/wxlogin")
     public Map getLogin(WechatUser user) {
-        try{
+        try {
             wxlogin.increment();
         } catch (Exception e) {
             return (Map) e;

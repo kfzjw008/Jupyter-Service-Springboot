@@ -35,8 +35,9 @@ public class FunctionController {
     private Counter SearchSunriseset;
     private Counter SearchSMoonPhase;
     private Counter Calendar;
+
     @PostConstruct
-    private void init(){
+    private void init() {
         counter_search = registry.counter("app_requests_method_count", "method", "StarSearchController.core");
         counter_index = registry.counter("app_requests_method_count", "method", "SearchSAOIndexController.index");
         EightPlanets = registry.counter("app_requests_method_count", "method", "EightPlanetsController.core");
@@ -45,32 +46,32 @@ public class FunctionController {
         Calendar = registry.counter("app_requests_method_count", "method", "CalendarController.core");
     }
 
-
     @GetMapping("/SearchSAO")
     public Map getSAO(Double LON, Double LAT) {
         //此处实现观测适宜度评价计算
-        try{
+        try {
             counter_index.increment();
         } catch (Exception e) {
             return (Map) e;
         }
         return FunctionService.GetSAO(LON, LAT);
     }
+
     @GetMapping("/StarSearch")
-    public Map test(String string,int page) throws Exception {
+    public Map test(String string, int page) throws Exception {
         //此处实现恒星查询
-        try{
+        try {
             counter_search.increment();
         } catch (Exception e) {
             return (Map) e;
         }
-            return    Map.of("Result", FunctionService.Search(string,page));
+        return Map.of("Result", FunctionService.Search(string, page));
     }
 
     @GetMapping("/EightPlanets")
     public Map GetEightPlanets() {
         //此处实现八大行星数值返回
-        try{
+        try {
             EightPlanets.increment();
         } catch (Exception e) {
             return (Map) e;
@@ -79,33 +80,35 @@ public class FunctionController {
     }
 
     @GetMapping("/SearchSunriseset")
-    public Map getSunriseset(int year,int month,int day ,int zone,double lon,double lat) {
+    public Map getSunriseset(int year, int month, int day, int zone, double lon, double lat) {
         //此处实现日出日落日期计算
-        try{
+        try {
             SearchSunriseset.increment();
         } catch (Exception e) {
             return (Map) e;
         }
-        return Map.of("Result",  FunctionService.GetSunriseset(year,month,day,zone,lon,lat));
+        return Map.of("Result", FunctionService.GetSunriseset(year, month, day, zone, lon, lat));
     }
+
     @GetMapping("/SearchSMoonPhase")
-    public Map getMoonPhase(int year,int month,int day ) {
+    public Map getMoonPhase(int year, int month, int day) {
         //此处实现月相检索
-        try{
+        try {
             SearchSMoonPhase.increment();
         } catch (Exception e) {
             return (Map) e;
         }
-        return Map.of("Result",  FunctionService.GetMoonPhase(year,month,day));
+        return Map.of("Result", FunctionService.GetMoonPhase(year, month, day));
     }
+
     @GetMapping("/Calendar")
-    public Map getCalendar(int year,int month,int day ) {
+    public Map getCalendar(int year, int month, int day) {
         //此处实现月相检索
-        try{
+        try {
             Calendar.increment();
         } catch (Exception e) {
             return (Map) e;
         }
-        return Map.of("Result",  FunctionService.GetCalendar(year,month,day));
+        return Map.of("Result", FunctionService.GetCalendar(year, month, day));
     }
 }

@@ -37,7 +37,7 @@ public class QusetionController {
     private Counter PutRecords;
 
     @PostConstruct
-    private void init(){
+    private void init() {
         ModuleExercises = registry.counter("app_requests_method_count", "method", "ModuleExercisesController.core");
         ModuleExercisesDetails = registry.counter("app_requests_method_count", "method", "ModuleExercisesDetailsController.core");
         GetQuestion = registry.counter("app_requests_method_count", "method", "GetQuestionController.core");
@@ -112,7 +112,7 @@ public class QusetionController {
 
     @PostMapping("/Search")
     public Map Find(String token, String word, @RequestParam(value = "page", defaultValue = "1") Integer page,
-                    @RequestParam(value = "size", defaultValue = "10") Integer size ) {
+                    @RequestParam(value = "size", defaultValue = "10") Integer size) {
         //此处已经实现试题搜索模块
         try {
             Search.increment();
@@ -120,11 +120,11 @@ public class QusetionController {
             return (Map) e;
         }
         PageRequest request = PageRequest.of(page - 1, size);
-        return Map.of("SearchResult", QuestionService.GetQuestionSearch(token,word,request));
+        return Map.of("SearchResult", QuestionService.GetQuestionSearch(token, word, request));
     }
 
     @PostMapping("/PutRecords")
-    public Map PutRecords(String token,int id,String source ,String answer,String openid) {
+    public Map PutRecords(String token, int id, String source, String answer, String openid) {
         //此处实现推送练习记录模块
         try {
             PutRecords.increment();
