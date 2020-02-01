@@ -45,6 +45,7 @@ public class WechatUser {
     private List<UserRecord> UserRecord;
     @OneToMany(mappedBy = "WechatUser", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Integral> Integral;
+
     public WechatUser(int id) {
         this.id = id;
     }

@@ -3,6 +3,7 @@ package com.jishe.jupyter.service;
 import com.alibaba.fastjson.JSONObject;
 import com.jishe.jupyter.component.JWT;
 import com.jishe.jupyter.component.RequestUtil;
+import com.jishe.jupyter.entity.Feedback;
 import com.jishe.jupyter.entity.Integral;
 import com.jishe.jupyter.entity.WechatUser;
 import com.jishe.jupyter.global;
@@ -37,6 +38,9 @@ public class WechatUserService {
     private JFFindRepoistory JFFindRepoistory;
     @Autowired
     private JFRepoistory JFRepoistory;
+
+    @Autowired
+    private FeedBackRepoistory feedBackRepoistory;
 
     private String appid = "wxe57f6e85d8263355";
     private String appsecret = "53d5c7fbfd6b286d71c9bb7dbb6fff20";
@@ -94,6 +98,31 @@ public class WechatUserService {
         return user;
     }
 
+    //用户资料维护
+    public String modifyUser(WechatUser user, String token) {
+        if (!VerifyJWT(token)) return "Failed";
+        WechatUser u = userfindRepository.find(user.getOpenId());
+        if (user.getNickname() != null) u.setNickname(user.getNickname());
+        if (user.getCity() != null) u.setNickname(user.getNickname());
+        if (user.getProvince() != null) u.setProvince(user.getProvince());
+        if (user.getGender() != null) u.setGender(user.getGender());
+        if (user.getName() != null) u.setName(user.getName());
+        if (user.getSchool() != null) u.setSchool(user.getSchool());
+        if (user.getSchoolid() != null) u.setSchoolid(user.getSchoolid());
+        userRepository.save(u);
+        return "Success";
+    }
+
+    public String feedback(String name, String title, String content, String tel, int questionnumber) {
+        Feedback fd = new Feedback();
+        fd.setContent(content);
+        fd.setQuestionnumber(questionnumber);
+        fd.setTel(tel);
+        fd.setTitle(title);
+        fd.setUsername(name);
+        feedBackRepoistory.save(fd);
+        return "Success";
+    }
 
     //添加积分模块
     public String AddIntergal(int count, String name, String token, String openid) {
@@ -116,9 +145,9 @@ public class WechatUserService {
     //返回用户积分模块
     public Map UserIntergal(String token, String openid) {
         if (!VerifyJWT(token)) return Map.of("Message", "Failed");
-        Map<Object, Object> ALL= new HashMap<>();
-        Map<Object, Object> scoremap= new HashMap<>();
-        Map<Object, Object> statusmap= new HashMap<>();
+        Map<Object, Object> ALL = new HashMap<>();
+        Map<Object, Object> scoremap = new HashMap<>();
+        Map<Object, Object> statusmap = new HashMap<>();
         scoremap.put("Practice", JFRepoistory.todayscore(userfindRepository.find(OpenId).getId(), "练习积分", minTime, maxTime));
         scoremap.put("Right", JFRepoistory.todayscore(userfindRepository.find(OpenId).getId(), "连对积分", minTime, maxTime));
         scoremap.put("QianDao", JFRepoistory.todayscore(userfindRepository.find(OpenId).getId(), "签到积分", minTime, maxTime));
@@ -130,7 +159,7 @@ public class WechatUserService {
         statusmap.put("Share", verityJF("分享积分", 8, OpenId));
         ALL.put("Score", scoremap);
         ALL.put("Status", statusmap);
-        ALL.put("ALLScoreToday",JFRepoistory.todayallscore(userfindRepository.find(OpenId).getId(), minTime, maxTime) );
+        ALL.put("ALLScoreToday", JFRepoistory.todayallscore(userfindRepository.find(OpenId).getId(), minTime, maxTime));
         ALL.put("AllScore", JFRepoistory.allscore(userfindRepository.find(OpenId).getId()));
         return ALL;
     }
@@ -160,8 +189,8 @@ public class WechatUserService {
         if (name.equals("分享积分")) {
             return j.size() < 3 && count == 8;
         }
-        if(name.equals("活动积分")){
+        if (name.equals("活动积分")) {
             return true;
-        }else return false;
+        } else return false;
     }
 }
