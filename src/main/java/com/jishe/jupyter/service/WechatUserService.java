@@ -3,12 +3,15 @@ package com.jishe.jupyter.service;
 import com.alibaba.fastjson.JSONObject;
 import com.jishe.jupyter.component.JWT;
 import com.jishe.jupyter.component.RequestUtil;
+import com.jishe.jupyter.entity.Board;
 import com.jishe.jupyter.entity.Feedback;
 import com.jishe.jupyter.entity.Integral;
 import com.jishe.jupyter.entity.WechatUser;
 import com.jishe.jupyter.global;
 import com.jishe.jupyter.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.jishe.jupyter.repository.JFRepoistory;
@@ -41,6 +44,9 @@ public class WechatUserService {
 
     @Autowired
     private FeedBackRepoistory feedBackRepoistory;
+
+    @Autowired
+    private  BoardRepository BoardRepository;
 
     private String appid = "wxe57f6e85d8263355";
     private String appsecret = "53d5c7fbfd6b286d71c9bb7dbb6fff20";
@@ -112,7 +118,7 @@ public class WechatUserService {
         userRepository.save(u);
         return "Success";
     }
-
+//反馈添加
     public String feedback(String name, String title, String content, String tel, int questionnumber) {
         Feedback fd = new Feedback();
         fd.setContent(content);
@@ -121,8 +127,23 @@ public class WechatUserService {
         fd.setTitle(title);
         fd.setUsername(name);
         feedBackRepoistory.save(fd);
+        feedBackRepoistory.refresh(fd);
         return "Success";
     }
+
+    //公告添加与返回
+    public Page<Board> board(Pageable page) {
+        return BoardRepository.findAll(page);
+    }
+    public Map insertboard(String content,String title){
+        Board b=new Board();
+        b.setContent(content);
+        b.setTitle(title);
+        BoardRepository.save(b);
+        BoardRepository.refresh(b);
+        return Map.of("Result",b);
+    }
+
 
     //添加积分模块
     public String AddIntergal(int count, String name, String token, String openid) {

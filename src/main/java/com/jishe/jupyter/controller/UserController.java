@@ -83,6 +83,15 @@ public class UserController {
     public Map feedback(String name, String title, String content, String tel, int questionnumber) {
         return Map.of("Result", WechatUserService.feedback(name, title, content, tel, questionnumber));
     }
-
+    @PostMapping("/insertboard")
+    public Map insertboard(String content,String title){
+        return  WechatUserService.insertboard(content, title);
+    }
+    @PostMapping("/board")
+    public Map CorrectRatequestion(@RequestParam(value = "page", defaultValue = "1") Integer page,
+                                   @RequestParam(value = "size", defaultValue = "10") Integer size) {
+        PageRequest request = PageRequest.of(page - 1, size);
+        return Map.of("Board", WechatUserService.board(request));
+    }
 
 }

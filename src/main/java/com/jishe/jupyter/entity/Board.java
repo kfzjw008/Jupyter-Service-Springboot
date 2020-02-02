@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 /**
  * @program: jupyter
- * @description: 天象日历实体类。
+ * @description: 公告板实体类。
  * @author: kfzjw008(Junwei Zhang)
  * @create: 2020-01-27 20:55
  **/
@@ -17,17 +17,12 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @Entity
-public class Feedback {
+public class Board {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
-    private int questionnumber;
     private String title;
     private String content;
-    private String tel;
-    private String username;
-    private int status;
     @Column(columnDefinition = "DATETIME NOT NULL " + "DEFAULT CURRENT_TIMESTAMP ON UPDATE " + "CURRENT_TIMESTAMP", updatable = false, insertable = false)
     private LocalDateTime updateTime;//资料最后更新时间（上次登录时间）
     @Column(columnDefinition = "TIMESTAMP NOT NULL " + "DEFAULT CURRENT_TIMESTAMP", updatable = false, insertable = false)

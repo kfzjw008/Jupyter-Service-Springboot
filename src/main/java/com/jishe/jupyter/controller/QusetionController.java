@@ -35,7 +35,9 @@ public class QusetionController {
     private Counter RecommendedExercises;
     private Counter Search;
     private Counter PutRecords;
-
+    private Counter insert;
+    private Counter update;
+    private Counter tz;
     @PostConstruct
     private void init() {
         ModuleExercises = registry.counter("app_requests_method_count", "method", "ModuleExercisesController.core");
@@ -45,6 +47,9 @@ public class QusetionController {
         RecommendedExercises = registry.counter("app_requests_method_count", "method", "RecommendedExercisesController.core");
         Search = registry.counter("app_requests_method_count", "method", "SearchController.core");
         PutRecords = registry.counter("app_requests_method_count", "method", "PutRecordsController.core");
+        insert = registry.counter("app_requests_method_count", "method", "insertController.core");
+        update = registry.counter("app_requests_method_count", "method", "updateController.core");
+       tz = registry.counter("app_requests_method_count", "method", "tzController.core");
     }
 
     @PostMapping("/ModuleExercises")
@@ -134,5 +139,37 @@ public class QusetionController {
         return Map.of("PutResult", QuestionService.PutPrcacticeRecord(token, id, source, answer, openid));
     }
 
+
+    @PostMapping("/update")
+    public Map updatequestion(int id, String content, String a, String b, String c, String d, String current, String analysis, int question_classification_id, int difficulty, String image) {
+        try {
+            update.increment();
+        } catch (Exception e) {
+            return (Map) e;
+        }
+        String s = QuestionService.updateQuestion(id, content, a, b, c, d, current, analysis, question_classification_id, difficulty, image);
+        return Map.of("Result", s);
+    }
+
+    @PostMapping("/insert")
+    public Map insertquestion(int id, String content, String a, String b, String c, String d, String current, String analysis, int question_classification_id, int difficulty, String image) {
+        try {
+            insert.increment();
+        } catch (Exception e) {
+            return (Map) e;
+        }
+        String s = QuestionService.insertQuestion(content, a, b, c, d, current, analysis, question_classification_id, difficulty, image);
+        return Map.of("Result", s);
+    }
+
+    @PostMapping("/updaterecord")
+    public Map  ranklist_tz(String openid,int count,String nickname){
+        try {
+            tz.increment();
+        } catch (Exception e) {
+            return (Map) e;
+        }
+        return QuestionService.ranklist_tz(openid, count, nickname);
+    }
 
 }

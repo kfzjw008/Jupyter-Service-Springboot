@@ -31,11 +31,14 @@ public class RankController {
     MeterRegistry registry;
     private Counter AllQuestion;
     private Counter CorrectRate;
-
+    private Counter integral;
+    private Counter tz;
     @PostConstruct
     private void init() {
         AllQuestion = registry.counter("app_requests_method_count", "method", "AllQuestionRankController.core");
         CorrectRate = registry.counter("app_requests_method_count", "method", "CorrectRateRankController.core");
+        tz = registry.counter("app_requests_method_count", "method", "tzRankController.core");
+        integral = registry.counter("app_requests_method_count", "method", "integralRankController.core");
     }
 
     @PostMapping("/AllQuestion")
@@ -62,4 +65,26 @@ public class RankController {
         return Map.of("CorrectRate", RankService.CurrentQuestion(request));
     }
 
+    @PostMapping("/integralRate")
+    public Map integral(@RequestParam(value = "page", defaultValue = "1") Integer page,
+                        @RequestParam(value = "size", defaultValue = "10") Integer size) {
+        try {
+            integral.increment();
+        } catch (Exception e) {
+            return (Map) e;
+        }
+        PageRequest request = PageRequest.of(page - 1, size);
+        return Map.of("integralRate", RankService.integral(request));
+    }
+    @PostMapping("/tzRate")
+    public Map tz(@RequestParam(value = "page", defaultValue = "1") Integer page,
+                        @RequestParam(value = "size", defaultValue = "10") Integer size) {
+        try {
+            tz.increment();
+        } catch (Exception e) {
+            return (Map) e;
+        }
+        PageRequest request = PageRequest.of(page - 1, size);
+        return Map.of("tzRate", RankService.tz(request));
+    }
 }

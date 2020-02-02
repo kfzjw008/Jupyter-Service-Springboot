@@ -1,9 +1,7 @@
 package com.jishe.jupyter.service;
 
 import com.jishe.jupyter.component.JWT;
-import com.jishe.jupyter.entity.Questions;
-import com.jishe.jupyter.entity.UserRecord;
-import com.jishe.jupyter.entity.question_classification;
+import com.jishe.jupyter.entity.*;
 import com.jishe.jupyter.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,6 +13,7 @@ import com.jishe.jupyter.repository.QuestionCountRepoistory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @program: jupyter
@@ -39,6 +38,9 @@ public class QuestionService {
     private QuestionRecordRepoistory QuestionRecordRepoistory;
     @Autowired
     private UserfindRepository userfindRepository;
+
+    @Autowired
+    private  ranklist_tz_Repository ranklist_tz_Repository;
 
     /**
      * @return :按照页数依次返回的试题详情。
@@ -127,7 +129,58 @@ public class QuestionService {
         QuestionRecordRepoistory.refresh(UserRecords);
         return 1;
     }
+public Map ranklist_tz(String openid,int count,String nickname){
+        WechatUser  user=userfindRepository.find(openid);
+        if(ranklist_tz_Repository.findByOpenid(openid)!=null){
+            ranklist_tz r=ranklist_tz_Repository.findByOpenid(openid);
+            if(count>r.getCount()){
+                r.setCount(count);
+                r.setNickname(nickname);
+                ranklist_tz_Repository.save(r);
+                return  Map.of("result",r);
+            }
+        }else{
+            ranklist_tz r=new ranklist_tz();
+            r.setCount(count);
+            r.setNickname(user.getNickname());
+            r.setOpenid(user.getOpenId());
+ranklist_tz_Repository.save(r);
+ranklist_tz_Repository.refresh(r);
+            return  Map.of("result",r);
+        }
+    return  Map.of("result",1);
+}
 
+
+    public String insertQuestion(String  content,String a,String b,String c,String d,String current,String analysis,int question_classification_id,int difficulty,String image){
+        Questions questions =new Questions();
+        if(content!=null)questions.setQuestionBody(content);
+        if(a!=null)questions.setA(a);
+        if(b!=null)questions.setB(b);
+        if(c!=null)questions.setC(c);
+        if(d!=null)questions.setD(d);
+        if(current!=null)questions.setCorrect_Answer(current);
+        if(analysis!=null)questions.setQuestionAnalysis(analysis);
+        if(question_classification_id!=0)questions.setDifficulty(difficulty);
+        if(image!=null)questions.setImage(image);
+        QuestionFindRepoistory.save(questions);
+        QuestionFindRepoistory.refresh(questions);
+        return "success";
+    }
+    public String updateQuestion(int id,String  content,String a,String b,String c,String d,String current,String analysis,int question_classification_id,int difficulty,String image){
+        Questions questions =QuestionFindRepoistory.find(id);
+        if(content!=null)questions.setQuestionBody(content);
+        if(b!=null)questions.setB(b);
+        if(c!=null)questions.setC(c);
+        if(current!=null)questions.setCorrect_Answer(current);
+        if(question_classification_id!=0)questions.setDifficulty(difficulty);
+        if(a!=null)questions.setA(a);
+        if(analysis!=null)questions.setQuestionAnalysis(analysis);
+        if(d!=null)questions.setD(d);
+        if(image!=null)questions.setImage(image);
+        QuestionFindRepoistory.save(questions);
+        return "success";
+    }
 
     public static boolean VerifyJWT(String token) {
         JWT util = new JWT();

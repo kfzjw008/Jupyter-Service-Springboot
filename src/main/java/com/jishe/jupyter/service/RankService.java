@@ -1,11 +1,10 @@
 package com.jishe.jupyter.service;
 
-import com.jishe.jupyter.entity.Questions;
-import com.jishe.jupyter.entity.WechatUser;
-import com.jishe.jupyter.entity.ranklist_allquestion;
-import com.jishe.jupyter.entity.ranklist_correctrate;
+import com.jishe.jupyter.entity.*;
 import com.jishe.jupyter.repository.RankList_AllQuestion_Repoistory;
 import com.jishe.jupyter.repository.RankList_CurrentQuestion_Repoistory;
+import com.jishe.jupyter.repository.ranklist_tz_Repository;
+import com.jishe.jupyter.repository.RankList_integral_Repoistory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,7 +29,10 @@ public class RankService {
     private RankList_AllQuestion_Repoistory rankList_allQuestion_repoistory;
     @Autowired
     private RankList_CurrentQuestion_Repoistory RankList_CurrentQuestion_Repoistory;
-
+    @Autowired
+    private RankList_integral_Repoistory RankList_integral_Repoistory;
+    @Autowired
+    private ranklist_tz_Repository ranklist_tz_Repository;
     /**
      * * @name: 总练习数量排行
      *
@@ -44,6 +46,12 @@ public class RankService {
 
     public Page<ranklist_correctrate> CurrentQuestion(Pageable page) {
         return RankList_CurrentQuestion_Repoistory.findAll(page);
+    }
+    public Page<ranklist_integral> integral(Pageable page) {
+        return RankList_integral_Repoistory .findAll(page);
+    }
+    public Page<ranklist_tz> tz(Pageable page) {
+        return ranklist_tz_Repository.findByNicknameAndCount(page);
     }
 
 }
