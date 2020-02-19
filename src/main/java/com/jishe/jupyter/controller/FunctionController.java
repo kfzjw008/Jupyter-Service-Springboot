@@ -103,7 +103,7 @@ public class FunctionController {
 
     @GetMapping("/Calendar")
     public Map getCalendar(int year, int month, int day) {
-        //此处实现月相检索
+        //此处实现日历
         try {
             Calendar.increment();
         } catch (Exception e) {

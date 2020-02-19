@@ -1,15 +1,13 @@
 package com.jishe.jupyter.controller;
 
+import com.jishe.jupyter.repository.RankList_AllQuestion_Repoistory;
 import com.jishe.jupyter.service.RankService;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import java.util.Map;
@@ -33,15 +31,17 @@ public class RankController {
     private Counter CorrectRate;
     private Counter integral;
     private Counter tz;
+    private Counter myrecord;
     @PostConstruct
     private void init() {
         AllQuestion = registry.counter("app_requests_method_count", "method", "AllQuestionRankController.core");
         CorrectRate = registry.counter("app_requests_method_count", "method", "CorrectRateRankController.core");
         tz = registry.counter("app_requests_method_count", "method", "tzRankController.core");
         integral = registry.counter("app_requests_method_count", "method", "integralRankController.core");
+        myrecord = registry.counter("app_requests_method_count", "method", "myrecordController.core");
     }
 
-    @PostMapping("/AllQuestion")
+    @GetMapping("/AllQuestion")
     public Map Allquestion(@RequestParam(value = "page", defaultValue = "1") Integer page,
                            @RequestParam(value = "size", defaultValue = "10") Integer size) {
         PageRequest request = PageRequest.of(page - 1, size);
@@ -53,7 +53,7 @@ public class RankController {
         return Map.of("AllQuestion", RankService.allquestions(request));
     }
 
-    @PostMapping("/CorrectRate")
+    @GetMapping("/CorrectRate")
     public Map CorrectRatequestion(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                    @RequestParam(value = "size", defaultValue = "10") Integer size) {
         try {
@@ -65,7 +65,7 @@ public class RankController {
         return Map.of("CorrectRate", RankService.CurrentQuestion(request));
     }
 
-    @PostMapping("/integralRate")
+    @GetMapping("/integralRate")
     public Map integral(@RequestParam(value = "page", defaultValue = "1") Integer page,
                         @RequestParam(value = "size", defaultValue = "10") Integer size) {
         try {
@@ -76,7 +76,7 @@ public class RankController {
         PageRequest request = PageRequest.of(page - 1, size);
         return Map.of("integralRate", RankService.integral(request));
     }
-    @PostMapping("/tzRate")
+    @GetMapping("/tzRate")
     public Map tz(@RequestParam(value = "page", defaultValue = "1") Integer page,
                         @RequestParam(value = "size", defaultValue = "10") Integer size) {
         try {
@@ -86,5 +86,15 @@ public class RankController {
         }
         PageRequest request = PageRequest.of(page - 1, size);
         return Map.of("tzRate", RankService.tz(request));
+    }
+
+    @GetMapping("/myrecord")
+    public Map myrecord(String nick){
+        try {
+            myrecord.increment();
+        } catch (Exception e) {
+            return (Map) e;
+        }
+        return RankService.myrecord(nick);
     }
 }

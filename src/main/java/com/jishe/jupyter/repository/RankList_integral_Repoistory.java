@@ -14,4 +14,5 @@ import org.springframework.data.domain.Pageable;
 public interface RankList_integral_Repoistory extends CustomizedRepoistory<ranklist_integral, String>   {
     Page<ranklist_integral> findAll(Pageable pageable);
 
+    ranklist_integral findByNickname(String nickname);
 }

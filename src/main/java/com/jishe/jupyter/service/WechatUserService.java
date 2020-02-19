@@ -46,16 +46,14 @@ public class WechatUserService {
     private FeedBackRepoistory feedBackRepoistory;
 
     @Autowired
-    private  BoardRepository BoardRepository;
+    private BoardRepository BoardRepository;
 
     private String appid = "wxe57f6e85d8263355";
     private String appsecret = "53d5c7fbfd6b286d71c9bb7dbb6fff20";
     WechatUser user = new WechatUser();
     private String OpenId;
     private String session_key;
-    LocalDateTime localDateTime = LocalDateTime.now();
-    LocalDateTime minTime = localDateTime.with(LocalTime.MIN);
-    LocalDateTime maxTime = localDateTime.with(LocalTime.MAX);
+
 
     /**
      * @return :WechatUser对象
@@ -105,20 +103,16 @@ public class WechatUserService {
     }
 
     //用户资料维护
-    public String modifyUser(WechatUser user, String token) {
-        if (!VerifyJWT(token)) return "Failed";
-        WechatUser u = userfindRepository.find(user.getOpenId());
-        if (user.getNickname() != null) u.setNickname(user.getNickname());
-        if (user.getCity() != null) u.setNickname(user.getNickname());
-        if (user.getProvince() != null) u.setProvince(user.getProvince());
-        if (user.getGender() != null) u.setGender(user.getGender());
-        if (user.getName() != null) u.setName(user.getName());
-        if (user.getSchool() != null) u.setSchool(user.getSchool());
-        if (user.getSchoolid() != null) u.setSchoolid(user.getSchoolid());
+    public WechatUser modifyUser(String school, String schoolid, String name, String openid, String token) {
+        WechatUser u = userfindRepository.find(openid);
+        u.setName(name);
+        u.setSchool(school);
+        u.setSchoolid(schoolid);
         userRepository.save(u);
-        return "Success";
+        return u;
     }
-//反馈添加
+
+    //反馈添加
     public String feedback(String name, String title, String content, String tel, int questionnumber) {
         Feedback fd = new Feedback();
         fd.setContent(content);
@@ -135,13 +129,14 @@ public class WechatUserService {
     public Page<Board> board(Pageable page) {
         return BoardRepository.findAll(page);
     }
-    public Map insertboard(String content,String title){
-        Board b=new Board();
+
+    public Map insertboard(String content, String title) {
+        Board b = new Board();
         b.setContent(content);
         b.setTitle(title);
         BoardRepository.save(b);
         BoardRepository.refresh(b);
-        return Map.of("Result",b);
+        return Map.of("Result", b);
     }
 
 
@@ -165,23 +160,51 @@ public class WechatUserService {
 
     //返回用户积分模块
     public Map UserIntergal(String token, String openid) {
+        LocalDateTime localDateTime = LocalDateTime.now();
+        LocalDateTime minTime = localDateTime.with(LocalTime.MIN);
+        LocalDateTime maxTime = localDateTime.with(LocalTime.MAX);
         if (!VerifyJWT(token)) return Map.of("Message", "Failed");
         Map<Object, Object> ALL = new HashMap<>();
         Map<Object, Object> scoremap = new HashMap<>();
         Map<Object, Object> statusmap = new HashMap<>();
-        scoremap.put("Practice", JFRepoistory.todayscore(userfindRepository.find(OpenId).getId(), "练习积分", minTime, maxTime));
-        scoremap.put("Right", JFRepoistory.todayscore(userfindRepository.find(OpenId).getId(), "连对积分", minTime, maxTime));
-        scoremap.put("QianDao", JFRepoistory.todayscore(userfindRepository.find(OpenId).getId(), "签到积分", minTime, maxTime));
-        scoremap.put("Share", JFRepoistory.todayscore(userfindRepository.find(OpenId).getId(), "分享积分", minTime, maxTime));
+        System.out.println("cao" + userfindRepository.find(openid));
+        int a1, a2, a3, a4;
+        System.out.println(minTime);
+        System.out.println(maxTime);
+        if (JFRepoistory.todayscore(userfindRepository.find(openid).getId(), "练习积分", minTime, maxTime) == null) {
+            a1 = 0;
+        } else {
+            a1 = JFRepoistory.todayscore(userfindRepository.find(openid).getId(), "练习积分", minTime, maxTime);
+        }
+        if (JFRepoistory.todayscore(userfindRepository.find(openid).getId(), "连对积分", minTime, maxTime) == null) {
+            a2 = 0;
+        } else {
+            a2 = JFRepoistory.todayscore(userfindRepository.find(openid).getId(), "连对积分", minTime, maxTime);
+        }
+        if (JFRepoistory.todayscore(userfindRepository.find(openid).getId(), "签到积分", minTime, maxTime) == null) {
+            a3 = 0;
+        } else {
+            a3 = JFRepoistory.todayscore(userfindRepository.find(openid).getId(), "签到积分", minTime, maxTime);
+        }
+        if (JFRepoistory.todayscore(userfindRepository.find(openid).getId(), "分享积分", minTime, maxTime) == null) {
+            a4 = 0;
+        } else {
+            a4 = JFRepoistory.todayscore(userfindRepository.find(openid).getId(), "分享积分", minTime, maxTime);
+        }
+        System.out.println();
+        scoremap.put("Practice", a1);
+        scoremap.put("Right", a2);
+        scoremap.put("QianDao", a3);
+        scoremap.put("Share", a4);
         //true为允许进行任务
-        statusmap.put("Practice", verityJF("练习积分", 1, OpenId));
-        statusmap.put("Right", verityJF("连对积分", 10, OpenId));
-        statusmap.put("QianDao", verityJF("签到积分", 10, OpenId));
-        statusmap.put("Share", verityJF("分享积分", 8, OpenId));
+        statusmap.put("Practice", verityJF("练习积分", 1, openid));
+        statusmap.put("Right", verityJF("连对积分", 10, openid));
+        statusmap.put("QianDao", verityJF("签到积分", 10, openid));
+        statusmap.put("Share", verityJF("分享积分", 8, openid));
         ALL.put("Score", scoremap);
         ALL.put("Status", statusmap);
-        ALL.put("ALLScoreToday", JFRepoistory.todayallscore(userfindRepository.find(OpenId).getId(), minTime, maxTime));
-        ALL.put("AllScore", JFRepoistory.allscore(userfindRepository.find(OpenId).getId()));
+        ALL.put("ALLScoreToday", JFRepoistory.todayallscore(userfindRepository.find(openid).getId(), minTime, maxTime));
+        ALL.put("AllScore", JFRepoistory.allscore(userfindRepository.find(openid).getId()));
         return ALL;
     }
 
@@ -196,8 +219,11 @@ public class WechatUserService {
 2、签到积分：每日签到积分+3，连续签到，第二天积分比第一天+1，最高为10，每日一次。name=签到积分
 3、分享积分：分享一次+8，每日上限3次。name=分享积分
 * */
-
+        LocalDateTime localDateTime = LocalDateTime.now();
+        LocalDateTime minTime = localDateTime.with(LocalTime.MIN);
+        LocalDateTime maxTime = localDateTime.with(LocalTime.MAX);
         List<Integral> j = JFFindRepoistory.findByNameAndInsertTimeBetween(name, minTime, maxTime);
+        System.out.println("size::"+name+j.size());
         if (name.equals("练习积分")) {
             return j.size() < 50 && count == 1;
         }

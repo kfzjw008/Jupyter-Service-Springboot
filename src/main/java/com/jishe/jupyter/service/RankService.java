@@ -5,6 +5,7 @@ import com.jishe.jupyter.repository.RankList_AllQuestion_Repoistory;
 import com.jishe.jupyter.repository.RankList_CurrentQuestion_Repoistory;
 import com.jishe.jupyter.repository.ranklist_tz_Repository;
 import com.jishe.jupyter.repository.RankList_integral_Repoistory;
+import org.apache.tomcat.util.digester.ObjectCreationFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.jishe.jupyter.repository.RankList_CurrentQuestion_Repoistory;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -51,7 +53,16 @@ public class RankService {
         return RankList_integral_Repoistory .findAll(page);
     }
     public Page<ranklist_tz> tz(Pageable page) {
-        return ranklist_tz_Repository.findByNicknameAndCount(page);
+        return ranklist_tz_Repository.findByNicknameAndCountOrderByCountAtDesc(page);
+    }
+
+    public Map myrecord(String nickname){
+        Map<Object,Object> m =new HashMap<>();
+        m.put("tz",ranklist_tz_Repository.findByNickname(nickname));
+        m.put("integral",RankList_integral_Repoistory.findByNickname(nickname));
+        m.put("CurrentQuestion", RankList_CurrentQuestion_Repoistory.findByNickname(nickname));
+        m.put("allQuestion", rankList_allQuestion_repoistory.findByNickname(nickname));
+        return m;
     }
 
 }

@@ -20,10 +20,10 @@ public interface JFRepoistory extends CustomizedRepoistory<Integral, String> {
 
     @Query("SELECT h FROM Integral h ")
     List<Integral> list();
-    @Query(value = "SELECT sum(h.count) FROM Integral h where wechatUser_id=:user")
-    int allscore(int user);
-   @Query(value="SELECT sum(h.count) FROM Integral h where wechatUser_id=?1 and insertTime between ?2 and ?3")
-    int  todayallscore(int wechatUser,LocalDateTime a,LocalDateTime b);
-    @Query(value="SELECT sum(h.count) FROM Integral h where wechatUser_id=?1 and name=?2 and insertTime between ?3 and ?4")
-    int  todayscore(int wechatUser,String name,LocalDateTime a,LocalDateTime b);
+    @Query(value = "SELECT sum(h.count) FROM Integral h where wechat_user_id=:user")
+    Integer allscore(int user);
+   @Query(value="SELECT sum(h.count) FROM Integral h where wechat_user_id=?1 and insertTime between ?2 and ?3")
+   Integer  todayallscore(int wechatUser,LocalDateTime a,LocalDateTime b);
+    @Query(value="SELECT sum(h.count) FROM Integral h where wechat_user_id=?1 and name=?2 and insertTime between ?3 and ?4")
+    Integer  todayscore(int wechatUser,String name,LocalDateTime a,LocalDateTime b);
 }

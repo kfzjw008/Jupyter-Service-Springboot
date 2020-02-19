@@ -7,7 +7,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-
 import java.util.List;
 
 /**
@@ -19,4 +18,5 @@ import java.util.List;
 public interface RankList_AllQuestion_Repoistory extends CustomizedRepoistory<ranklist_allquestion, String>   {
     Page<ranklist_allquestion> findAll(Pageable pageable);
 
+    ranklist_allquestion findByNickname(String nickname);
 }

@@ -38,3 +38,11 @@ GET http://localhost:8080/images/1.jpg
 GET http://localhost:8080/images/moon/1_m15.jpg
 
 ###
+
+POST http://localhost:8080/api/user/Verifytoken?token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJvY0NfdTBPMU9HVzN5dUdSOGhrc2FtQm5feER3IiwiaWQiOjQsImV4cCI6MTU4MDc1MDg2OSwiT3BlbklkIjoib2NDX3UwTzFPR1czeXVHUjhoa3NhbUJuX3hEdyIsImlhdCI6MTU4MDcxNDg2OSwianRpIjoiNCIsIk5pY2tuYW1lIjoi5Yeg5L2V5Y-45LukIn0.PWgOmtUIJLcf_M945PNeybXb_Fw5Thc3p7Xha7D10ZY
+
+###
+
+POST http://localhost:8080/api/user/Verifytoken
+
+###

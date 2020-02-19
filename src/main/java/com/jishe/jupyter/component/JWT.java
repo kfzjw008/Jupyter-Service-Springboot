@@ -57,7 +57,7 @@ public class JWT {
     }
 
     /**
-     * 解密jwt
+     * 解密jwtHeaderPlayload SignatureSignature
      *
      * @param jwt
      * @return

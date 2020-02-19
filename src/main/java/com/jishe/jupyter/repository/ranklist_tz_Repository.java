@@ -16,9 +16,11 @@ import java.util.List;
  * @create: 2020-01-14 11:58
  **/
 public interface ranklist_tz_Repository extends CustomizedRepoistory<ranklist_tz, String> {
-
-    Page<ranklist_tz> findByNicknameAndCount(Pageable pageable);
+    @Query("select e from ranklist_tz e ORDER BY e.count DESC")
+    Page<ranklist_tz> findByNicknameAndCountOrderByCountAtDesc(Pageable pageable);
    ranklist_tz findByOpenid(String openid);
     @Query("SELECT h FROM ranklist_tz h ")
     List<Board> list(@Param("id") int id);
+
+    ranklist_tz  findByNickname(String nickname);
 }

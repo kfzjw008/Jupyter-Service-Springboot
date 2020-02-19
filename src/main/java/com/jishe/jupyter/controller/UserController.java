@@ -1,6 +1,8 @@
 package com.jishe.jupyter.controller;
 
+import com.jishe.jupyter.component.JWT;
 import com.jishe.jupyter.entity.WechatUser;
+import com.jishe.jupyter.service.QuestionService;
 import com.jishe.jupyter.service.RankService;
 import com.jishe.jupyter.service.WechatUserService;
 import io.micrometer.core.instrument.Counter;
@@ -8,10 +10,7 @@ import io.micrometer.core.instrument.MeterRegistry;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import java.util.Map;
@@ -36,16 +35,17 @@ public class UserController {
     private Counter AddIntergal;
     private Counter UserIntergal;
     private Counter modifyUser;
-
+    private Counter Verifytoken;
 
     @PostConstruct
     private void init() {
         AddIntergal = registry.counter("app_requests_method_count", "method", "AddIntergalController.core");
         UserIntergal = registry.counter("app_requests_method_count", "method", "UserIntergalController.core");
         modifyUser = registry.counter("app_requests_method_count", "method", "modifyUserController.core");
+        Verifytoken = registry.counter("app_requests_method_count", "method", "VerifytokenController.core");
     }
 
-    @PostMapping("/AddIntergal")
+    @GetMapping("/AddIntergal")
     public Map AddIntergal(int count, String name, String token, String openid) {
         //用户申请积分接口
         try {
@@ -57,7 +57,7 @@ public class UserController {
         return Map.of("Result", WechatUserService.AddIntergal(count, name, token, openid));
     }
 
-    @PostMapping("/UserIntergal")
+    @GetMapping("/UserIntergal")
     public Map UserIntergal(String token, String openid) {
         //返回用户当日积分信息
         try {
@@ -68,30 +68,49 @@ public class UserController {
         return Map.of("Result", WechatUserService.UserIntergal(token, openid));
     }
 
-    @PostMapping("/modifyuser")
-    public Map modifyUser(WechatUser user, String token) {
+    @GetMapping("/modifyuser")
+    public Map modifyUser(String school, String schoolid, String name, String openid, String token) {
         //用户资料修改接口
         try {
             modifyUser.increment();
         } catch (Exception e) {
             return Map.of("Result", "Failed");
         }
-        return Map.of("Result", WechatUserService.modifyUser(user, token));
+        return Map.of("Result", WechatUserService.modifyUser(school, schoolid, name, openid, token));
     }
 
-    @PostMapping("/feedback")
+    @GetMapping("/feedback")
     public Map feedback(String name, String title, String content, String tel, int questionnumber) {
         return Map.of("Result", WechatUserService.feedback(name, title, content, tel, questionnumber));
     }
-    @PostMapping("/insertboard")
-    public Map insertboard(String content,String title){
-        return  WechatUserService.insertboard(content, title);
+
+    @GetMapping("/insertboard")
+    public Map insertboard(String content, String title) {
+        return WechatUserService.insertboard(content, title);
     }
-    @PostMapping("/board")
+
+    @GetMapping("/board")
     public Map CorrectRatequestion(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                    @RequestParam(value = "size", defaultValue = "10") Integer size) {
         PageRequest request = PageRequest.of(page - 1, size);
         return Map.of("Board", WechatUserService.board(request));
+    }
+
+    @PostMapping("/admin")
+    public boolean admin(String name, String password) {
+        if (name.equals("admin") && password.equals("kfzjw0000")) {
+            return true;
+        } else return false;
+    }
+
+    @GetMapping("/Verifytoken")
+    public Map VerifyJWT(String token) {
+        try {
+            Verifytoken.increment();
+        } catch (Exception e) {
+            return Map.of("result", "Failed");
+        }
+        return Map.of("result", QuestionService.VerifyJWT(token));
     }
 
 }

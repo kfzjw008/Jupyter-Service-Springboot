@@ -60,7 +60,11 @@ public class FunctionService {
         JSONArray AQIData = AQIjsonObject.getJSONArray("HeWeather6");
         JSONObject AQIData2 = AQIData.getJSONObject(0);
         JSONObject AQIData3 = AQIData2.getJSONObject("air_now_city");
-        String AQI = AQIData3.get("aqi") + "";
+        String AQI="30";//避免空指针警告
+        if(AQIData3.get("aqi")!=null){
+          AQI = AQIData3.get("aqi") + "";
+        }
+
 
         JSONObject jsonObject = (JSONObject) JSONObject.parse(DataResultString);
         JSONArray JsonDataSeries = jsonObject.getJSONArray("dataseries");

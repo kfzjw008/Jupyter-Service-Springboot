@@ -40,7 +40,7 @@ public class QuestionService {
     private UserfindRepository userfindRepository;
 
     @Autowired
-    private  ranklist_tz_Repository ranklist_tz_Repository;
+    private ranklist_tz_Repository ranklist_tz_Repository;
 
     /**
      * @return :按照页数依次返回的试题详情。
@@ -113,71 +113,76 @@ public class QuestionService {
      * @author: kfzjw008(Junwei Zhang)
      * @create: 2020-01-15 11:35
      **/
-    public int PutPrcacticeRecord(String token,int id,String Source ,String answer,String OpenId) {
+    public int PutPrcacticeRecord(String token, int id, String Source, String answer, String OpenId) {
         if (!VerifyJWT(token)) return 0;
-        UserRecord UserRecords=new UserRecord();
+        UserRecord UserRecords = new UserRecord();
         UserRecords.setQuestions(QuestionFindRepoistory.find(id));
         UserRecords.setQuestionSource(Source);
         UserRecords.setUserAnswer(answer);
         UserRecords.setWechatUser(userfindRepository.find(OpenId));
-       if( QuestionFindRepoistory.find(id).getCorrect_Answer().equals(answer)){
-           UserRecords.setT_OR_F(true);
-       }else{
-           UserRecords.setT_OR_F(false);
-       }
+        if (QuestionFindRepoistory.find(id).getCorrect_Answer().equals(answer)) {
+            UserRecords.setT_OR_F(true);
+        } else {
+            UserRecords.setT_OR_F(false);
+        }
         QuestionRecordRepoistory.save(UserRecords);
         QuestionRecordRepoistory.refresh(UserRecords);
         return 1;
     }
-public Map ranklist_tz(String openid,int count,String nickname){
-        WechatUser  user=userfindRepository.find(openid);
-        if(ranklist_tz_Repository.findByOpenid(openid)!=null){
-            ranklist_tz r=ranklist_tz_Repository.findByOpenid(openid);
-            if(count>r.getCount()){
+
+    public Map ranklist_tz(String openid, int count, String nickname) {
+        WechatUser user = userfindRepository.find(openid);
+        if (count <= 0) {
+            count = 0;
+        }
+        if (ranklist_tz_Repository.findByOpenid(openid) != null) {
+            ranklist_tz r = ranklist_tz_Repository.findByOpenid(openid);
+            if (count > r.getCount()) {
                 r.setCount(count);
                 r.setNickname(nickname);
                 ranklist_tz_Repository.save(r);
-                return  Map.of("result",r);
+                return Map.of("result", r);
             }
-        }else{
-            ranklist_tz r=new ranklist_tz();
+        } else {
+            ranklist_tz r = new ranklist_tz();
             r.setCount(count);
             r.setNickname(user.getNickname());
             r.setOpenid(user.getOpenId());
-ranklist_tz_Repository.save(r);
-ranklist_tz_Repository.refresh(r);
-            return  Map.of("result",r);
+            ranklist_tz_Repository.save(r);
+            ranklist_tz_Repository.refresh(r);
+            return Map.of("result", r);
         }
-    return  Map.of("result",1);
-}
+        return Map.of("result", 1);
+    }
 
 
-    public String insertQuestion(String  content,String a,String b,String c,String d,String current,String analysis,int question_classification_id,int difficulty,String image){
-        Questions questions =new Questions();
-        if(content!=null)questions.setQuestionBody(content);
-        if(a!=null)questions.setA(a);
-        if(b!=null)questions.setB(b);
-        if(c!=null)questions.setC(c);
-        if(d!=null)questions.setD(d);
-        if(current!=null)questions.setCorrect_Answer(current);
-        if(analysis!=null)questions.setQuestionAnalysis(analysis);
-        if(question_classification_id!=0)questions.setDifficulty(difficulty);
-        if(image!=null)questions.setImage(image);
+    public String insertQuestion(String content, String a, String b, String c, String d, String current, String analysis, int question_classification_id, int difficulty, String image) {
+        Questions questions = new Questions();
+        if (content != null) questions.setQuestionBody(content);
+        if (a != null) questions.setA(a);
+        if (b != null) questions.setB(b);
+        if (c != null) questions.setC(c);
+        if (d != null) questions.setD(d);
+        if (current != null) questions.setCorrect_Answer(current);
+        if (analysis != null) questions.setQuestionAnalysis(analysis);
+        if (question_classification_id != 0) questions.setDifficulty(difficulty);
+        if (image != null) questions.setImage(image);
         QuestionFindRepoistory.save(questions);
         QuestionFindRepoistory.refresh(questions);
         return "success";
     }
-    public String updateQuestion(int id,String  content,String a,String b,String c,String d,String current,String analysis,int question_classification_id,int difficulty,String image){
-        Questions questions =QuestionFindRepoistory.find(id);
-        if(content!=null)questions.setQuestionBody(content);
-        if(b!=null)questions.setB(b);
-        if(c!=null)questions.setC(c);
-        if(current!=null)questions.setCorrect_Answer(current);
-        if(question_classification_id!=0)questions.setDifficulty(difficulty);
-        if(a!=null)questions.setA(a);
-        if(analysis!=null)questions.setQuestionAnalysis(analysis);
-        if(d!=null)questions.setD(d);
-        if(image!=null)questions.setImage(image);
+
+    public String updateQuestion(int id, String content, String a, String b, String c, String d, String current, String analysis, int question_classification_id, int difficulty, String image) {
+        Questions questions = QuestionFindRepoistory.find(id);
+        if (content != null) questions.setQuestionBody(content);
+        if (b != null) questions.setB(b);
+        if (c != null) questions.setC(c);
+        if (current != null) questions.setCorrect_Answer(current);
+        if (question_classification_id != 0) questions.setDifficulty(difficulty);
+        if (a != null) questions.setA(a);
+        if (analysis != null) questions.setQuestionAnalysis(analysis);
+        if (d != null) questions.setD(d);
+        if (image != null) questions.setImage(image);
         QuestionFindRepoistory.save(questions);
         return "success";
     }

@@ -14,4 +14,6 @@ import org.springframework.data.domain.Pageable;
 public interface RankList_CurrentQuestion_Repoistory extends CustomizedRepoistory<ranklist_correctrate, String>   {
     Page<ranklist_correctrate> findAll(Pageable pageable);
 
+   ranklist_correctrate findByNickname(String nickname);
+
 }

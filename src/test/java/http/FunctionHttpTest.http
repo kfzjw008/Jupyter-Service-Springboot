@@ -31,3 +31,7 @@ GET http://localhost:8080/api/function/SearchSMoonPhase?year=2020&month=1&day=27
 
 GET http://localhost:8080/api/function/Calendar?year=2020&month=1&day=30
 ###
+
+
+GET  http://localhost:8080/images/index2.jpg
+###

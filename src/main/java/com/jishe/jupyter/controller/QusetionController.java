@@ -6,10 +6,7 @@ import io.micrometer.core.instrument.MeterRegistry;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import java.util.Map;
@@ -52,7 +49,7 @@ public class QusetionController {
        tz = registry.counter("app_requests_method_count", "method", "tzController.core");
     }
 
-    @PostMapping("/ModuleExercises")
+    @GetMapping("/ModuleExercises")
     public Map ModuleExercises(String token) {
         //此处已经实现模块练习模块搜索
         try {
@@ -64,7 +61,7 @@ public class QusetionController {
     }
 
     //此处实现模块练习试题搜索，基于页码和模块编号
-    @PostMapping("/ModuleExercisesDetails")
+    @GetMapping("/ModuleExercisesDetails")
     public Map ModuleExercisesDetails(String token, int module, @RequestParam(value = "page", defaultValue = "1") Integer page,
                                       @RequestParam(value = "size", defaultValue = "10") Integer size) {
         try {
@@ -76,7 +73,7 @@ public class QusetionController {
         return Map.of("ModuleExercisesDetails", QuestionService.GetModuleExercises(token, module, request));
     }
 
-    @PostMapping("/GetQuestion")
+    @GetMapping("/GetQuestion")
     public Map GetQuestion(String token, int id) {
         //此处已经实现指定题目搜索
         try {
@@ -87,7 +84,7 @@ public class QusetionController {
         return Map.of("Question_Result", QuestionService.GetQuestion(token, id));
     }
 
-    @PostMapping("/RandomGetQuestion")
+    @GetMapping("/RandomGetQuestion")
     public Map RandomGetQuestion(String token) {
         //此处已经实现随机获得试题
         try {
@@ -103,8 +100,13 @@ public class QusetionController {
         }
 
     }
+    @GetMapping("/QuestionCount")
+    public Map QuestionCount(String token) {
+        //此处已经实现随机获得试题
+     return Map.of("COUNT",QuestionService.GetQuestionCount(token));
 
-    @PostMapping("/RecommendedExercises")
+    }
+    @GetMapping("/RecommendedExercises")
     public Map RecommendedExercises(String token) {
         //此处实现随机推荐练习模块
         try {
@@ -115,7 +117,7 @@ public class QusetionController {
         return Map.of("SAO", 1);
     }
 
-    @PostMapping("/Search")
+    @GetMapping("/Search")
     public Map Find(String token, String word, @RequestParam(value = "page", defaultValue = "1") Integer page,
                     @RequestParam(value = "size", defaultValue = "10") Integer size) {
         //此处已经实现试题搜索模块
@@ -128,7 +130,7 @@ public class QusetionController {
         return Map.of("SearchResult", QuestionService.GetQuestionSearch(token, word, request));
     }
 
-    @PostMapping("/PutRecords")
+    @GetMapping("/PutRecords")
     public Map PutRecords(String token, int id, String source, String answer, String openid) {
         //此处实现推送练习记录模块
         try {
@@ -140,7 +142,7 @@ public class QusetionController {
     }
 
 
-    @PostMapping("/update")
+    @GetMapping("/update")
     public Map updatequestion(int id, String content, String a, String b, String c, String d, String current, String analysis, int question_classification_id, int difficulty, String image) {
         try {
             update.increment();
@@ -151,7 +153,7 @@ public class QusetionController {
         return Map.of("Result", s);
     }
 
-    @PostMapping("/insert")
+    @GetMapping("/insert")
     public Map insertquestion(int id, String content, String a, String b, String c, String d, String current, String analysis, int question_classification_id, int difficulty, String image) {
         try {
             insert.increment();
@@ -162,7 +164,7 @@ public class QusetionController {
         return Map.of("Result", s);
     }
 
-    @PostMapping("/updaterecord")
+    @GetMapping("/updaterecord")
     public Map  ranklist_tz(String openid,int count,String nickname){
         try {
             tz.increment();
