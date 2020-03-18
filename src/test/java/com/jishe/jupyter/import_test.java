@@ -16,6 +16,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import org.wltea.analyzer.core.IKSegmenter;
 import org.wltea.analyzer.core.Lexeme;
@@ -72,3 +76,10 @@ public class import_test {
         System.out.println("---------------全部完成");
     }
 }
+
+
+
+
+
+
+
