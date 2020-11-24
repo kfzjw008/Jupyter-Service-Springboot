@@ -2,7 +2,10 @@ package com.jishe.jupyter.repository;
 
 import com.jishe.jupyter.entity.Calendar;
 import com.jishe.jupyter.entity.Integral;
+import com.jishe.jupyter.entity.Questions;
 import com.jishe.jupyter.entity.WechatUser;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -26,4 +29,6 @@ public interface JFRepoistory extends CustomizedRepoistory<Integral, String> {
    Integer  todayallscore(int wechatUser,LocalDateTime a,LocalDateTime b);
     @Query(value="SELECT sum(h.count) FROM Integral h where wechat_user_id=?1 and name=?2 and insertTime between ?3 and ?4")
     Integer  todayscore(int wechatUser,String name,LocalDateTime a,LocalDateTime b);
+    @Query("SELECT h FROM Integral h ")
+    Page<Integral> findAlll(Pageable pageable);
 }

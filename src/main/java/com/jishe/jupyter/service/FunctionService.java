@@ -509,7 +509,10 @@ public class FunctionService {
     public Map GetMoonPhase(int year, int month, int day) {
         Map<Object, Object> AllDataMap = new HashMap<>();
         RequestUtil request = new RequestUtil();
-        String DataResultString = request.CreateRequestUtil("http://api.help.bj.cn/apis/nongli/?id=101010100&now=" + year + "-" + month + "-" + day);
+        String DataResultString = request.CreateRequestUtil("https://api.help.bj.cn/apis/nongli/?id=101010100&now=" + year + "-" + month + "-" + day);
+        System.out.println("666____________________");
+        System.out.println( DataResultString);
+        System.out.println("666____________________");
         JSONObject jsonObject = (JSONObject) JSONObject.parse(DataResultString);
         JSONArray AQIData = jsonObject.getJSONArray("data");
         JSONObject years = AQIData.getJSONObject(13);//16 21

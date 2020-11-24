@@ -1,7 +1,10 @@
 package com.jishe.jupyter.repository;
 
+import com.jishe.jupyter.entity.Questions;
 import com.jishe.jupyter.entity.UserRecord;
 import com.jishe.jupyter.entity.WechatUser;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -16,4 +19,6 @@ import java.util.List;
 public interface QuestionRecordRepoistory extends CustomizedRepoistory<UserRecord, String> {
     @Query("SELECT h FROM UserRecord h ")
     List<WechatUser> list();
+    @Query("SELECT h FROM UserRecord h ")
+    Page<UserRecord> findAll( Pageable pageable);
 }

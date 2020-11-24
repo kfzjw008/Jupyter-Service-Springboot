@@ -1,6 +1,7 @@
 package com.jishe.jupyter.service;
 
 import com.jishe.jupyter.component.JWT;
+import com.jishe.jupyter.component.xsd;
 import com.jishe.jupyter.entity.*;
 import com.jishe.jupyter.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,7 +81,24 @@ public class QuestionService {
         if (!VerifyJWT(token)) return null;
         return QuestionFindRepoistory.find(id);
     }
+    public ArrayList<Questions> GetQuestion2(String token, String  openid,int id) {
+        ArrayList l=new ArrayList();
+        for(int i=1;i<1000;i++)
+        {	  String t1=QuestionFindRepoistory.find(id).getQuestionBody();
+        String t2=QuestionFindRepoistory.find(i).getQuestionBody();
+            xsd t3 =new xsd(t1,t2);
+          //  System.out.println("==相似度==="+i+"===="+t3.sim());
+            if(t3.sim()>0.5){//0.5取值来源
+                System.out.println("==相似度==="+i+"===="+t3.sim());
+                l.add(QuestionFindRepoistory.find(i));
+            }
+        }
+if(l.isEmpty()==true){
+    l.add(    QuestionFindRepoistory.find(1 + (int) (Math.random() * (this.GetQuestionCount(token)))));
 
+}
+        return l ;
+    }
     /**
      * @name: 获取所有题目总数
      * @description: 获取题库中所有题目的总共数量。
@@ -129,7 +147,18 @@ public class QuestionService {
         QuestionRecordRepoistory.refresh(UserRecords);
         return 1;
     }
+    public Page<UserRecord> PutPrcacticeRecords(String token,Pageable p) {
+        if (!VerifyJWT(token)) return null;
+        return  QuestionRecordRepoistory.findAll(p);
 
+
+    }
+    public Page<Questions> FindAlllQ(String token,Pageable p) {
+        if (!VerifyJWT(token)) return null;
+        return  QuestionRepository.findAlll(p);
+
+
+    }
     public Map ranklist_tz(String openid, int count, String nickname) {
         WechatUser user = userfindRepository.find(openid);
         if (count <= 0) {
@@ -196,6 +225,14 @@ public class QuestionService {
             return false;
         }
         return true;
+    }
+
+
+    public static boolean VerifyQ(int id) {
+
+
+
+        return true;//可以推荐返回t，不能推荐返回f
     }
 
 

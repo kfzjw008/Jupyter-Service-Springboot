@@ -72,6 +72,16 @@ public class QusetionController {
         PageRequest request = PageRequest.of(page - 1, size);
         return Map.of("ModuleExercisesDetails", QuestionService.GetModuleExercises(token, module, request));
     }
+    @GetMapping("/FindAlllQ")
+    public Map  FindAlllQ(String token, @RequestParam(value = "page", defaultValue = "1") Integer page,
+                                      @RequestParam(value = "size", defaultValue = "10") Integer size) {
+
+        PageRequest request = PageRequest.of(page - 1, size);
+        return Map.of("Details", QuestionService.FindAlllQ(token,  request));
+    }
+
+
+
 
     @GetMapping("/GetQuestion")
     public Map GetQuestion(String token, int id) {
@@ -83,6 +93,9 @@ public class QusetionController {
         }
         return Map.of("Question_Result", QuestionService.GetQuestion(token, id));
     }
+
+
+
 
     @GetMapping("/RandomGetQuestion")
     public Map RandomGetQuestion(String token) {
@@ -107,14 +120,14 @@ public class QusetionController {
 
     }
     @GetMapping("/RecommendedExercises")
-    public Map RecommendedExercises(String token) {
+    public Map RecommendedExercises(String token,String openid,int id) {
         //此处实现随机推荐练习模块
         try {
             RecommendedExercises.increment();
         } catch (Exception e) {
             return (Map) e;
         }
-        return Map.of("SAO", 1);
+        return Map.of("SAO", QuestionService.GetQuestion2(token,openid,id));
     }
 
     @GetMapping("/Search")
@@ -140,6 +153,16 @@ public class QusetionController {
         }
         return Map.of("PutResult", QuestionService.PutPrcacticeRecord(token, id, source, answer, openid));
     }
+    @GetMapping("/PutallRecord")
+    public Map PutallRecord(String token, @RequestParam(value = "page", defaultValue = "1") Integer page,
+                            @RequestParam(value = "size", defaultValue = "10") Integer size) {
+        //此处实现推送练习记录模块
+
+            PutRecords.increment();
+        PageRequest request = PageRequest.of(page - 1, size);
+        return Map.of("PutResult", QuestionService.PutPrcacticeRecords(token,request));
+    }
+
 
 
     @GetMapping("/update")

@@ -13,5 +13,11 @@ GET http://localhost:8080/api/login/wxlogin
   "code": "021JcM4N13Mtra1Zmt7N1SOG4N1JcM4O"
 }
 ###
+GET http://localhost:8080/api/user/admin?name=1111&password=2222
+
+###
+
+GET http://localhost:8080/api/user/allfeedback
+###
 
 

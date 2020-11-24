@@ -58,10 +58,23 @@ public class RankService {
 
     public Map myrecord(String nickname){
         Map<Object,Object> m =new HashMap<>();
-        m.put("tz",ranklist_tz_Repository.findByNickname(nickname));
-        m.put("integral",RankList_integral_Repoistory.findByNickname(nickname));
+        m.put("tz","--");
+        m.put("integral","--");
+        m.put("CurrentQuestion","--");
+        m.put("allQuestion","--");
+        if(ranklist_tz_Repository.findByNickname(nickname)!=null){
+            m.put("tz",ranklist_tz_Repository.findByNickname(nickname));
+        }
+    if(RankList_integral_Repoistory.findByNickname(nickname)!=null) {
+        m.put("integral", RankList_integral_Repoistory.findByNickname(nickname));
+    }
+    if(RankList_CurrentQuestion_Repoistory.findByNickname(nickname)!=null){
         m.put("CurrentQuestion", RankList_CurrentQuestion_Repoistory.findByNickname(nickname));
-        m.put("allQuestion", rankList_allQuestion_repoistory.findByNickname(nickname));
+    }
+     if(rankList_allQuestion_repoistory.findByNickname(nickname)!=null){
+         m.put("allQuestion", rankList_allQuestion_repoistory.findByNickname(nickname));
+     }
+
         return m;
     }
 

@@ -41,7 +41,17 @@ public class LoginController {
         } catch (Exception e) {
             return (Map) e;
         }
-        user = UserService.Login(user);
+        user = UserService.Login(user,0);
+        return Map.of("OpenId", user);
+    }
+    @GetMapping("/qqlogin")
+    public Map getLoginQQ(WechatUser user) {
+        try {
+            wxlogin.increment();
+        } catch (Exception e) {
+            return (Map) e;
+        }
+        user = UserService.Login(user,1);
         return Map.of("OpenId", user);
     }
 }

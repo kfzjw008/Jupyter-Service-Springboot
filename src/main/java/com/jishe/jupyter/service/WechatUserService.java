@@ -53,7 +53,8 @@ public class WechatUserService {
     WechatUser user = new WechatUser();
     private String OpenId;
     private String session_key;
-
+    private String qqappid = "1110395793";
+    private String qqappsecret = "ZshmQwu0bgNWCRDR";
 
     /**
      * @return :WechatUser对象
@@ -63,22 +64,46 @@ public class WechatUserService {
      * @author: kfzjw008(Junwei Zhang)
      * @create: 2020-01-08 22:35
      **/
-    public WechatUser Login(WechatUser user) {
+    public WechatUser Login(WechatUser user,int pt) {//默认为空，微信小程序。1为qq小程序
+        String str1="";
+        if(pt==0){
+            str1="微信-";
+        }
+        if(pt==1){
+            str1="QQ-";
+        }
         global glo = new global();
         RequestUtil request = new RequestUtil();
-        String resultString = request.CreateRequestUtil("https://api.weixin.qq.com/sns/jscode2session?appid=" + appid + "&secret=" + appsecret + "&js_code=" + user.getCode() + "&grant_type=authorization_code");
+        String resultString ="";
+        if(pt==0){
+            System.out.println("wx");
+ resultString = request.CreateRequestUtil("https://api.weixin.qq.com/sns/jscode2session?appid=" + appid + "&secret=" + appsecret + "&js_code=" + user.getCode() + "&grant_type=authorization_code");
+            JSONObject jsonObject = (JSONObject) JSONObject.parse(resultString);
+            System.out.println(resultString);
+            session_key = jsonObject.get("session_key") + "";
+            OpenId = jsonObject.get("openid") + "";
+            System.out.println("session_key==" + session_key);
+            System.out.println("OpenId==" + OpenId);
+        }
+     if(pt==1){
+         System.out.println("qq");
+  resultString = request.CreateRequestUtil("https://api.q.qq.com/sns/jscode2session?appid=" + qqappid + "&secret=" + qqappsecret + "&js_code=" + user.getCode() + "&grant_type=authorization_code");
+         JSONObject jsonObject = (JSONObject) JSONObject.parse(resultString);
+         session_key = jsonObject.get("session_key") + "";
+         OpenId = jsonObject.get("openid") + "";
+         System.out.println("session_key==" + session_key);
+         System.out.println("OpenId==" + OpenId);
+     }
         // 解析json
-        JSONObject jsonObject = (JSONObject) JSONObject.parse(resultString);
-        session_key = jsonObject.get("session_key") + "";
-        OpenId = jsonObject.get("openid") + "";
-        System.out.println("session_key==" + session_key);
-        System.out.println("OpenId==" + OpenId);
+
+        System.out.println("https://api.q.qq.com/sns/jscode2session?appid=" + qqappid + "&secret=" + qqappsecret + "&js_code=" + user.getCode() + "&grant_type=authorization_code");
+
         WechatUser LoginUser = new WechatUser();
         JWT util = new JWT();
 
         if (userfindRepository.find(OpenId) != null) {
+            System.out.println(OpenId);
             LoginUser = userfindRepository.find(OpenId);
-            LoginUser.setNickname(user.getNickname());
             LoginUser.setProvince(user.getProvince());
             LoginUser.setCity(user.getCity());
             LoginUser.setCode(user.getCode());
@@ -90,8 +115,10 @@ public class WechatUserService {
             user = LoginUser;
             userRepository.save(LoginUser);
         } else {
+            System.out.println("fg");
             user.setOpenId(OpenId);
             user.setSession(session_key);
+            user.setNickname(str1+user.getNickname());
             String token = util.createJWT(glo.getExpiration_time(), user);
             System.out.println(token);
             user.setJWTToken(token);
@@ -130,6 +157,15 @@ public class WechatUserService {
         return BoardRepository.findAll(page);
     }
 
+    public Page<Integral> alljf(Pageable page) {
+        return JFRepoistory.findAll(page);
+    }
+    public Page<Feedback> allfeedback(Pageable page) {
+        return feedBackRepoistory.allfeedback(page);
+    }
+    public Page<WechatUser> all(Pageable page) {
+        return userRepository.all(page);
+    }
     public Map insertboard(String content, String title) {
         Board b = new Board();
         b.setContent(content);
@@ -168,7 +204,7 @@ public class WechatUserService {
         Map<Object, Object> scoremap = new HashMap<>();
         Map<Object, Object> statusmap = new HashMap<>();
         System.out.println("cao" + userfindRepository.find(openid));
-        int a1, a2, a3, a4;
+        int a1, a2, a3, a4,a5;
         System.out.println(minTime);
         System.out.println(maxTime);
         if (JFRepoistory.todayscore(userfindRepository.find(openid).getId(), "练习积分", minTime, maxTime) == null) {
@@ -191,16 +227,23 @@ public class WechatUserService {
         } else {
             a4 = JFRepoistory.todayscore(userfindRepository.find(openid).getId(), "分享积分", minTime, maxTime);
         }
+        if (JFRepoistory.todayscore(userfindRepository.find(openid).getId(), "视频积分", minTime, maxTime) == null) {
+            a5 = 0;
+        } else {
+            a5 = JFRepoistory.todayscore(userfindRepository.find(openid).getId(), "视频积分", minTime, maxTime);
+        }
         System.out.println();
         scoremap.put("Practice", a1);
         scoremap.put("Right", a2);
         scoremap.put("QianDao", a3);
         scoremap.put("Share", a4);
+        scoremap.put("sp", a5);
         //true为允许进行任务
         statusmap.put("Practice", verityJF("练习积分", 1, openid));
         statusmap.put("Right", verityJF("连对积分", 10, openid));
         statusmap.put("QianDao", verityJF("签到积分", 10, openid));
         statusmap.put("Share", verityJF("分享积分", 8, openid));
+        statusmap.put("sp", verityJF("视频积分", 8, openid));
         ALL.put("Score", scoremap);
         ALL.put("Status", statusmap);
         ALL.put("ALLScoreToday", JFRepoistory.todayallscore(userfindRepository.find(openid).getId(), minTime, maxTime));
@@ -222,7 +265,9 @@ public class WechatUserService {
         LocalDateTime localDateTime = LocalDateTime.now();
         LocalDateTime minTime = localDateTime.with(LocalTime.MIN);
         LocalDateTime maxTime = localDateTime.with(LocalTime.MAX);
-        List<Integral> j = JFFindRepoistory.findByNameAndInsertTimeBetween(name, minTime, maxTime);
+        System.out.println(minTime+" "+maxTime);
+        List<Integral> j = JFFindRepoistory.findByNameAndInsertTimeBetween2(userfindRepository.find(openid).getId(),name, minTime, maxTime);
+        System.out.println(j);
         System.out.println("size::"+name+j.size());
         if (name.equals("练习积分")) {
             return j.size() < 50 && count == 1;
@@ -235,6 +280,9 @@ public class WechatUserService {
         }
         if (name.equals("分享积分")) {
             return j.size() < 3 && count == 8;
+        }
+        if (name.equals("视频积分")) {
+            return j.size() < 10 ;
         }
         if (name.equals("活动积分")) {
             return true;

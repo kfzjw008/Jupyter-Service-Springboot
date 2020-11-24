@@ -3,6 +3,8 @@ package com.jishe.jupyter.repository;
 import com.jishe.jupyter.entity.Feedback;
 import com.jishe.jupyter.entity.Integral;
 import com.jishe.jupyter.entity.WechatUser;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -18,4 +20,6 @@ import java.util.List;
 public interface FeedBackRepoistory extends CustomizedRepoistory<Feedback, String> {
     @Query("SELECT h FROM Feedback h ")
     List<Feedback> list(@Param("id") int OpenId);
+    @Query("SELECT h FROM Feedback h ")
+    Page<Feedback> allfeedback(Pageable page);
 }

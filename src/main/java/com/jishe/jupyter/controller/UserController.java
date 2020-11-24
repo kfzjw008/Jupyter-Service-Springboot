@@ -67,6 +67,13 @@ public class UserController {
         }
         return Map.of("Result", WechatUserService.UserIntergal(token, openid));
     }
+    @GetMapping("/alljf")
+    public Map alljf(@RequestParam(value = "page", defaultValue = "1") Integer page,
+                                   @RequestParam(value = "size", defaultValue = "10") Integer size) {
+        PageRequest request = PageRequest.of(page - 1, size);
+        return Map.of("jf", WechatUserService.alljf(request));
+    }
+
 
     @GetMapping("/modifyuser")
     public Map modifyUser(String school, String schoolid, String name, String openid, String token) {
@@ -83,7 +90,18 @@ public class UserController {
     public Map feedback(String name, String title, String content, String tel, int questionnumber) {
         return Map.of("Result", WechatUserService.feedback(name, title, content, tel, questionnumber));
     }
-
+    @GetMapping("/allfeedback")
+    public Map allfeedback(@RequestParam(value = "page", defaultValue = "1") Integer page,
+                           @RequestParam(value = "size", defaultValue = "10") Integer size) {
+        PageRequest request = PageRequest.of(page - 1, size);
+        return Map.of("Result", WechatUserService.allfeedback(request));
+    }
+    @GetMapping("/alluser")
+    public Map allu(@RequestParam(value = "page", defaultValue = "1") Integer page,
+                           @RequestParam(value = "size", defaultValue = "10") Integer size) {
+        PageRequest request = PageRequest.of(page - 1, size);
+        return Map.of("Result", WechatUserService.all(request));
+    }
     @GetMapping("/insertboard")
     public Map insertboard(String content, String title) {
         return WechatUserService.insertboard(content, title);
@@ -96,7 +114,7 @@ public class UserController {
         return Map.of("Board", WechatUserService.board(request));
     }
 
-    @PostMapping("/admin")
+    @GetMapping("/admin")
     public boolean admin(String name, String password) {
         if (name.equals("admin") && password.equals("kfzjw0000")) {
             return true;

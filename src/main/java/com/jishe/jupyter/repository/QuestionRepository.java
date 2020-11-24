@@ -17,4 +17,7 @@ public interface QuestionRepository extends CustomizedRepoistory<Questions, Stri
     @Query("SELECT h FROM Questions h WHERE h.question_classification.id=:id ")
         //  Questions  find(@Param("id") int id, Pageable pageable);
     Page<Questions> findAll(@Param("id") int id, Pageable pageable);
+    @Query("SELECT h FROM Questions h  ")
+        //  Questions  find(@Param("id") int id, Pageable pageable);
+    Page<Questions> findAlll(Pageable pageable);
 }

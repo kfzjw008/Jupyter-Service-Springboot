@@ -5,7 +5,7 @@
 # * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
 # * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
 //获取所有试题分类
-POST http://localhost:8080/api/question/ModuleExercises?token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJvY0NfdTBPMU9HVzN5dUdSOGhrc2FtQm5feER3IiwiaWQiOjQsImV4cCI6MTU3OTAwODUzMCwiT3BlbklkIjoib2NDX3UwTzFPR1czeXVHUjhoa3NhbUJuX3hEdyIsImlhdCI6MTU3ODk3MjUzMCwianRpIjoiNCIsIk5pY2tuYW1lIjoi5Yeg5L2V5Y-45LukIn0.HBXx2Up_K-ri4_D9Hl3gfc5Vo0GdnBAoCibVNzaRIhw
+GET http://localhost:8080/api/question/ModuleExercises?token=kfzjw0000
 
 ###
 
@@ -44,5 +44,14 @@ POST http://localhost:8080/api/user/Verifytoken?token=eyJhbGciOiJIUzI1NiJ9.eyJzd
 ###
 
 POST http://localhost:8080/api/user/Verifytoken
+
+###
+
+GET http://localhost:8080/api/question/FindAlllQ?token=kfzjw0000
+
+###
+
+
+GET http://localhost:8080/api/question/RecommendedExercises?token=kfzjw0000&openid=1&id=6
 
 ###

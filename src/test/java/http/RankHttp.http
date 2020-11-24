@@ -9,6 +9,7 @@ POST http://localhost:8080/api/rank/AllQuestion?page=1
 
 ###
 
-POST http://localhost:8080/api/rank/CorrectRate?page=1
+GET http://localhost:8080/api/rank/AllQuestion?page=1
 
 ###
+GET http://localhost:8080/api/robot/talk?content=你好

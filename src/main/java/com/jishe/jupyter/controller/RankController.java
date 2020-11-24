@@ -97,4 +97,6 @@ public class RankController {
         }
         return RankService.myrecord(nick);
     }
+
+
 }
